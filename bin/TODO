@@ -1,0 +1,8 @@
+This is the todo file. This file contains information using the Todo.txt format.
+
+TODO:
+(1) Setup event system +EventSystem
+(2) Create error logging and add more error management +ErrorHandling
+(2.1) Allow errors in objects that are called inside the main fucntions to relay their errors to the main function +ErrorHandling
+(3) Create menu system and classes.
+(4) Create more gameplay
