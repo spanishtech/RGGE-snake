@@ -8,5 +8,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/spanish/Downloads/RGGE Early beta/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="/home/spanish/Downloads/slick/lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="/home/spanish/Downloads/slick/lib/natives-linux.jar"/>
+	<classpathentry kind="lib" path="/home/spanish/Downloads/slick/lib/natives-mac.jar"/>
+	<classpathentry kind="lib" path="/home/spanish/Downloads/slick/lib/natives-windows.jar"/>
+	<classpathentry kind="lib" path="/home/spanish/Downloads/slick/lib/slick-util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

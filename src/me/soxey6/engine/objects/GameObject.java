@@ -3,7 +3,7 @@ package me.soxey6.engine.objects;
 import me.soxey6.engine.main.Game;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
+import org.newdawn.slick.Color;
 
 
 public class GameObject
@@ -34,13 +34,15 @@ public class GameObject
 	 */
 	public void render()
 	{
-		GL11.glColor3f(colour.getRed(), colour.getGreen(), colour.getBlue());
+    	GL11.glDisable(GL11.GL_BLEND);
 		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glColor4f(colour.getRed(), colour.getGreen(), colour.getBlue(),colour.getAlpha());
 		    GL11.glVertex2f(posX,posY);
 		    GL11.glVertex2f(posX+sizeX,posY);
 		    GL11.glVertex2f(posX+sizeX,posY+sizeY);
 		    GL11.glVertex2f(posX,posY+sizeY);
 		GL11.glEnd();
+    	GL11.glEnable(GL11.GL_BLEND);
 	}
 	
 	/**

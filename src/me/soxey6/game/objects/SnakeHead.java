@@ -1,7 +1,7 @@
 package me.soxey6.game.objects;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.Color;
+import org.newdawn.slick.Color;
 
 import me.soxey6.engine.main.Game;
 import me.soxey6.engine.objects.GameObject;
@@ -53,10 +53,10 @@ public class SnakeHead extends GameObject {
 			this.setDirection(3);
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_W))
 		{
-			this.setDirection(0);
+			this.setDirection(2);
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_S))
 		{
-			this.setDirection(2);
+			this.setDirection(0);
 		}
 	}
 	

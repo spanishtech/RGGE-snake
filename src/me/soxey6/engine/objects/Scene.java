@@ -20,6 +20,7 @@ public class Scene {
 	private String title;
 	private Game game;
 	private Gui	gui;
+	private boolean focused;
 	private EventManager eventManager;
 	private ArrayList<GameObject> gameObjects;
 	
@@ -32,10 +33,29 @@ public class Scene {
 		
 	}
 	
-	public void onFocus()
+	public void focusChange(boolean focused)
 	{
+		if(focused)
 		// Set window title
 		game.getWindow().getDisplay().setTitle(this.game.getGameName()+" - "+this.title);
+	}
+	
+	/**
+	 * Process input for this scene here.
+	 */
+	public void input()
+	{
+		
+	}
+	
+	public void logic()
+	{
+		
+	}
+	
+	public void render()
+	{
+		
 	}
 	
 }

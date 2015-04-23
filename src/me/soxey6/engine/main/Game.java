@@ -1,4 +1,5 @@
 package me.soxey6.engine.main;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -9,16 +10,19 @@ import me.soxey6.game.objects.SnakeHead;
 import me.soxey6.utils.ErrorHandling;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 /**
  * @author Pat Childs || Soxey6
- * @version Dev-0.0.1
+ * @version Dev-0.0.2
  */
 public class Game
 {
 	private final boolean LIMIT_LOGIC = true;
 	private final long LOGIC_INCREMENT_MS = 100;
 	private final int STARTING_TAIL_LENGTH = 100;
+	private final boolean SHOW_SPLASH = true;
+	private final int SPLASH_LENGTH_MS = 3000;
 	
 	
 	private String gameName;
@@ -43,6 +47,10 @@ public class Game
 		// Initializes the display and openGL
 		initDisplay();
 		
+		// Engine splash
+		if(SHOW_SPLASH)
+		splash();
+		
 		//Creates the objects to be used in the game.
 		initGame();
 		
@@ -52,6 +60,7 @@ public class Game
 		// When game loop exits, it cleans up everything.
 		cleanUp();
 	}
+
 	/**
 	 * Cleans up by <b>destroying</b> the window and OpenGL setup
 	 * @return Void
@@ -96,7 +105,35 @@ public class Game
 			//TODO: Handle the error
 			return 0;
 	}
-
+	
+	/**
+	 * This will render the engine splash, because #YOLO
+	 */
+	@SuppressWarnings("static-access")
+	private void splash() {
+		
+		long startSplash = System.currentTimeMillis();
+		
+		Font awtFont = new Font("Times New Roman", Font.BOLD, 65);
+		TrueTypeFont rgge = new TrueTypeFont(awtFont, true);
+		
+		 awtFont = new Font("Times New Roman", Font.BOLD, 24);
+		TrueTypeFont made = new TrueTypeFont(awtFont, true);
+		
+		while(System.currentTimeMillis()<=startSplash+SPLASH_LENGTH_MS)
+		{
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			
+			made.drawString(400-rgge.getWidth("RGGE")/2, 300- rgge.getHeight("RGGE")+made.getHeight("Made with")-5, "Made with",Color.white);
+			rgge.drawString(400-rgge.getWidth("RGGE")/2, 300- rgge.getHeight("RGGE")/2, "RGGE",Color.white);
+			
+			this.getWindow().getDisplay().update();
+			if(this.getWindow().getDisplay().isCloseRequested())
+				System.exit(0);
+		}
+		
+	}
+	
 	/**
 	 * This is where the game initializes (After setting up rendering)
 	 * All code that needs to be run at the beginning and only once should be put here.
@@ -126,9 +163,20 @@ public class Game
 	{
 		// This create a new window called whatever is passed through the constructor of this object.
 		window = new Window(this.gameName,800,600);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);               
+		 
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);          
+ 
+        	// enable alpha blending
+        	GL11.glEnable(GL11.GL_BLEND);
+        	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+ 
+        	GL11.glViewport(0,0,800,600);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+ 
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 800, 0, 600, 1, -1);
+		GL11.glOrtho(0, 800, 600, 0, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
 

@@ -9,3 +9,4 @@ TODO:
 (5) GUNS +Game
 (6) Change parsing the object to having the object have a static getInstance() function
 (7) Create wrapper class
+(8) Create input class
