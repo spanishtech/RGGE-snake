@@ -3,6 +3,9 @@ package me.soxey6.engine.objects;
 import java.util.ArrayList;
 
 import me.soxey6.engine.main.Game;
+import me.soxey6.engine.main.Wrapper;
+import me.soxey6.engine.managers.EventManager;
+import me.soxey6.engine.managers.SceneManager;
 @SuppressWarnings("static-access")
 /**
  * Scene class:
@@ -15,13 +18,18 @@ import me.soxey6.engine.main.Game;
  * @author spanish
  *
  */
-public class Scene {
+public class Scene extends Wrapper{
+	private final boolean LIMIT_LOGIC = true;
+	private final long LOGIC_INCREMENT_MS = 100;
+	
 	private String name;
 	private String title;
+	private boolean focused;
+
 	private Game game;
 	private Gui	gui;
-	private boolean focused;
-	private EventManager eventManager;
+
+	private int lastLogicTime;
 	private ArrayList<GameObject> gameObjects;
 	
 	public Scene(String name, Game game)
@@ -31,6 +39,13 @@ public class Scene {
 		this.title=name;
 		this.game=game;
 		
+		this.gameObjects=new ArrayList<GameObject>();
+		
+		//Currently stubs
+		this.gui = new Gui();
+		this.setEventManager(EventManager.getEventManager());
+		this.setSceneManager(SceneManager.getSceneManager());
+		this.getSceneManager().addScene(this);
 	}
 	
 	public void focusChange(boolean focused)
@@ -45,17 +60,99 @@ public class Scene {
 	 */
 	public void input()
 	{
-		
+		if(focused)
+			return;
+		else
+			return;
 	}
 	
+	/**
+	 * Process logic for this scene here.
+	 */
 	public void logic()
 	{
-		
+		if(focused)
+			return;
+		else
+			return;	
 	}
 	
+	/**
+	 * Process rendering for this scene here.
+	 */
 	public void render()
 	{
-		
+		if(focused)
+			return;
+		else
+			return;
 	}
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public boolean isFocused() {
+		return focused;
+	}
+
+	public void setFocused(boolean focused) {
+		this.focused = focused;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public Gui getGui() {
+		return gui;
+	}
+
+	public void setGui(Gui gui) {
+		this.gui = gui;
+	}
+
+
+	public int getLastLogicTime() {
+		return lastLogicTime;
+	}
+
+	public void setLastLogicTime(int lastLogicTime) {
+		this.lastLogicTime = lastLogicTime;
+	}
+
+	public ArrayList<GameObject> getGameObjects() {
+		return gameObjects;
+	}
+
+	public void setGameObjects(ArrayList<GameObject> gameObjects) {
+		this.gameObjects = gameObjects;
+	}
+
+	public boolean isLimitLogic() {
+		return LIMIT_LOGIC;
+	}
+
+	public long getLogicIncrementMS() {
+		return LOGIC_INCREMENT_MS;
+	}
+
 }
+
+	

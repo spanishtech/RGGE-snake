@@ -4,7 +4,7 @@ package me.soxey6.engine.main;
  * @author Pat Childs || Soxey6
  * @version Dev-0.0.2
  */
-public class MainComponent
+public class EntryPoint
 {
 	private static Game game;
 	private final static String gameName = "Snake, SNAKE, SNAAAKEEE";
@@ -17,7 +17,7 @@ public class MainComponent
 		return game;
 	}
 	public static void setGame(Game game) {
-		MainComponent.game = game;
+		EntryPoint.game = game;
 	}
 	
 }

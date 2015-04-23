@@ -14,10 +14,10 @@ public class GameObject
 	private float posY;
 	private float sizeX;
 	private float sizeY;
-	private Game game;
+	private Scene scene;
 	public int direction = 0;
 	
-	public GameObject(String name, Game game,Color colour, float posX, float posY, float sizeX, float sizeY)
+	public GameObject(String name, Scene scene,Color colour, float posX, float posY, float sizeX, float sizeY)
 	{
 		this.name=name;
 		this.colour=colour;
@@ -25,8 +25,8 @@ public class GameObject
 		this.posY=posY;
 		this.sizeX=sizeX;
 		this.sizeY=sizeY;
-		this.game=game;
-		game.getGameObjects().add(this);
+		this.scene=scene;
+		this.scene.getGameObjects().add(this);
 	}
 	
 	/**
@@ -109,9 +109,9 @@ public class GameObject
 	/**
 	 * @return the game
 	 */
-	public Game getGame()
+	public Scene getScene()
 	{
-		return game;
+		return scene;
 	}
 
 	/**
@@ -165,9 +165,9 @@ public class GameObject
 	/**
 	 * @param game the game to set
 	 */
-	public void setGame(Game game)
+	public void setScene(Scene scene)
 	{
-		this.game = game;
+		this.scene = scene;
 	}
 	
 }

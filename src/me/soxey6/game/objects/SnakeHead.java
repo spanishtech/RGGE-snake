@@ -5,13 +5,14 @@ import org.newdawn.slick.Color;
 
 import me.soxey6.engine.main.Game;
 import me.soxey6.engine.objects.GameObject;
+import me.soxey6.engine.objects.Scene;
 
 public class SnakeHead extends GameObject {
 	private int direction;
 	private float speed;
 	
-	public SnakeHead(String name, Game game, Color colour, float posX, float posY, float sizeX, float sizeY) {
-		super(name, game, colour, posX, posY, sizeX, sizeY);
+	public SnakeHead(String name, Scene scene, Color colour, float posX, float posY, float sizeX, float sizeY) {
+		super(name, scene, colour, posX, posY, sizeX, sizeY);
 		this.direction=0;
 		this.speed=20;
 	}
@@ -33,13 +34,13 @@ public class SnakeHead extends GameObject {
 		{
 			this.setPosX(this.getPosX()-this.getSpeed());
 		}
-		for(GameObject gameObject : this.getGame().getGameObjects())
+		/*for(GameObject gameObject : this.getGame().getGameObjects())
 		{
 			if((this.getPosX()==gameObject.getPosX()&&this.getPosY()==gameObject.getPosY())&&!(gameObject instanceof SnakeHead))
 			{
-				this.getGame().gameOver();
+				//this.getGame().gameOver();
 			}
-		}
+		}*/
 	}
 	
 	@Override

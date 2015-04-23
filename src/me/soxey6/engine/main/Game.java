@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import me.soxey6.engine.managers.SceneManager;
 import me.soxey6.engine.objects.GameObject;
+import me.soxey6.engine.objects.Scene;
 import me.soxey6.engine.render.Window;
-import me.soxey6.game.objects.SnakeHead;
+import me.soxey6.game.scenes.MainGameScene;
 import me.soxey6.utils.ErrorHandling;
 
 import org.lwjgl.opengl.GL11;
@@ -18,16 +20,18 @@ import org.newdawn.slick.TrueTypeFont;
  */
 public class Game
 {
-	private final boolean LIMIT_LOGIC = true;
-	private final long LOGIC_INCREMENT_MS = 100;
-	private final int STARTING_TAIL_LENGTH = 100;
+	private final boolean GLOBAL_LIMIT_LOGIC = false;
+	private final long GLOBAL_LOGIC_INCREMENT_MS = 100;
 	private final boolean SHOW_SPLASH = true;
-	private final int SPLASH_LENGTH_MS = 3000;
-	
+	private final int SPLASH_LENGTH_MS = 5000;
 	
 	private String gameName;
+	
 	private Window window;
+	private static Game game;
 	private ErrorHandling errorHandler;
+	private SceneManager sceneManager;
+	
 	private long lastLogicTime = 0;
 	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 	
@@ -38,6 +42,8 @@ public class Game
 	 */
 	public Game(String gameName)
 	{
+		this.game=this;
+		this.sceneManager=new SceneManager();
 		// Sets the game name from the constructor
 		this.gameName=gameName;
 		
@@ -127,7 +133,7 @@ public class Game
 			made.drawString(400-rgge.getWidth("RGGE")/2, 300- rgge.getHeight("RGGE")+made.getHeight("Made with")-5, "Made with",Color.white);
 			rgge.drawString(400-rgge.getWidth("RGGE")/2, 300- rgge.getHeight("RGGE")/2, "RGGE",Color.white);
 			
-			this.getWindow().getDisplay().update();
+			this.window.update();
 			if(this.getWindow().getDisplay().isCloseRequested())
 				System.exit(0);
 		}
@@ -141,18 +147,8 @@ public class Game
 	//TODO: Setup error reporting on this function
 	private void initGame()
 	{
-		new SnakeHead("Head", this, new Color(255,255,255), 21, 21, 18, 18);
-		for(int i=0; i<=STARTING_TAIL_LENGTH-1; i++)
-		{
-			new GameObject(Integer.toString(i), this, new Color(255,255,255), 21, 21, 18, 18){
-				public void logic()
-				{
-					// This moves the tail to the object below it in the array (Next segment.)
-					this.setPosX(this.getGame().getGameObjects().get(this.getGame().getGameObjects().indexOf(this)-1).getPosX());
-					this.setPosY(this.getGame().getGameObjects().get(this.getGame().getGameObjects().indexOf(this)-1).getPosY());
-				}
-			};
-		}
+		new MainGameScene("Test", this);
+		this.sceneManager.switchScene("Test");
 	}
 
 	/**
@@ -186,9 +182,9 @@ public class Game
 	 */
 	public int input()
 	{
-		for(GameObject gameObject:this.gameObjects)
+		for(Scene scene:this.sceneManager.getScenes())
 		{
-			gameObject.input();
+			scene.input();
 		}
 		return 0;
 	}
@@ -200,10 +196,11 @@ public class Game
 	public int logic()
 	{
 		// Check to see if the logic needs to be limited and if so do so.
-		if(!LIMIT_LOGIC||System.currentTimeMillis()>=lastLogicTime+LOGIC_INCREMENT_MS){
-			for(int i=this.gameObjects.size()-1;i>=0;i--)
+		if(!GLOBAL_LIMIT_LOGIC||System.currentTimeMillis()>=lastLogicTime+GLOBAL_LOGIC_INCREMENT_MS){
+			for(Scene scene:this.sceneManager.getScenes())
 			{
-				gameObjects.get(i).logic();
+				if(!scene.isLimitLogic()||System.currentTimeMillis()>=scene.getLastLogicTime()+scene.getLogicIncrementMS())
+				scene.logic();
 			}
 			//TODO: logic
 			lastLogicTime=System.currentTimeMillis();
@@ -220,10 +217,10 @@ public class Game
 	public int render()
 	{
 		// Clear the screen and depth buffer
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);  
-		for(GameObject gameObject:gameObjects)
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
+		for(Scene scene:this.sceneManager.getScenes())
 		{
-			gameObject.render();
+			scene.render();
 		}
 		this.window.update();
 		//TODO: render
@@ -244,6 +241,14 @@ public class Game
 		return window;
 	}
 	
+	public static Game getGame() {
+		return game;
+	}
+
+	public static void setGame(Game game) {
+		Game.game = game;
+	}
+
 	/**
 	 * @return the gameObjects
 	 */
