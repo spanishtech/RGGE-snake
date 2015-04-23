@@ -1,5 +1,4 @@
 package me.soxey6.utils;
-
 import java.util.ArrayList;
 /**
  * The class contains functions for checking errors and a list of error codes.

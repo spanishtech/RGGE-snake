@@ -5,8 +5,8 @@ import javax.swing.JOptionPane;
 
 import me.soxey6.engine.objects.GameObject;
 import me.soxey6.engine.render.Window;
+import me.soxey6.game.objects.SnakeHead;
 import me.soxey6.utils.ErrorHandling;
-import objects.SnakeHead;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
@@ -18,7 +18,7 @@ public class Game
 {
 	private final boolean LIMIT_LOGIC = true;
 	private final long LOGIC_INCREMENT_MS = 100;
-	private final int STARTING_TAIL_LENGTH = 10;
+	private final int STARTING_TAIL_LENGTH = 100;
 	
 	
 	private String gameName;

@@ -1,4 +1,4 @@
-package objects;
+package me.soxey6.game.objects;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.Color;
