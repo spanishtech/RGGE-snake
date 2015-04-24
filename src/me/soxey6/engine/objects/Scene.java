@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import me.soxey6.engine.main.Game;
 import me.soxey6.engine.main.Wrapper;
-import me.soxey6.engine.managers.EventManager;
 import me.soxey6.engine.managers.SceneManager;
+import me.soxey6.engine.managers.event.EventManager;
 @SuppressWarnings("static-access")
 /**
  * Scene class:
@@ -29,15 +29,15 @@ public class Scene extends Wrapper{
 	private Game game;
 	private Gui	gui;
 
-	private int lastLogicTime;
+	private long lastLogicTime;
 	private ArrayList<GameObject> gameObjects;
 	
-	public Scene(String name, Game game)
+	public Scene(String name)
 	{
 		// Setup variables
 		this.name=name;
 		this.title=name;
-		this.game=game;
+		this.game=Game.getGame();
 		
 		this.gameObjects=new ArrayList<GameObject>();
 		
@@ -46,6 +46,10 @@ public class Scene extends Wrapper{
 		this.setEventManager(EventManager.getEventManager());
 		this.setSceneManager(SceneManager.getSceneManager());
 		this.getSceneManager().addScene(this);
+		
+		// Log the creation
+		this.getLogger().log(this.getLogger().DEBUG, "Creating Scene: "+this.getName());
+
 	}
 	
 	public void focusChange(boolean focused)
@@ -129,11 +133,11 @@ public class Scene extends Wrapper{
 	}
 
 
-	public int getLastLogicTime() {
+	public long getLastLogicTime() {
 		return lastLogicTime;
 	}
 
-	public void setLastLogicTime(int lastLogicTime) {
+	public void setLastLogicTime(long lastLogicTime) {
 		this.lastLogicTime = lastLogicTime;
 	}
 

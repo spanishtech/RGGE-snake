@@ -10,7 +10,7 @@ public class SceneManager {
 	
 	public SceneManager()
 	{
-		this.sceneManager=this;
+		sceneManager=this;
 	}
 	
 	public Scene getScene(String name)

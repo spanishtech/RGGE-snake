@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Y define the specific error/warning.
  * @author Soxey6
  */
-public class ErrorHandling {
+public class ErrorHandler {
 	/**
 	 * An unknown error with input
 	 * Value is 100
@@ -73,11 +73,26 @@ public class ErrorHandling {
 	 */
 	public final int UNKWN_UNKWN = 999;
 	
+	public static ErrorHandler getErrorHandler() {
+		return errorHandler;
+	}
+
+	public static void setErrorHandler(ErrorHandler errorHandler) {
+		ErrorHandler.errorHandler = errorHandler;
+	}
+
+	private static ErrorHandler errorHandler;
+	
 	// Bellow is a hard coded arrays with errors considered Critical, both exception objects.
 	private ArrayList<Exception> criticalErrors = new ArrayList<Exception>();
 	
 	// This is the last error.
 	public int lastError=0;
+	
+	public ErrorHandler()
+	{
+		errorHandler = this;
+	}
 	
 	/**
 	 *  This function will assure that no errors that have been thrown are recoverable.

@@ -1,11 +1,10 @@
 package me.soxey6.game.objects;
 
-import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.Color;
-
-import me.soxey6.engine.main.Game;
 import me.soxey6.engine.objects.GameObject;
 import me.soxey6.engine.objects.Scene;
+
+import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 
 public class SnakeHead extends GameObject {
 	private int direction;

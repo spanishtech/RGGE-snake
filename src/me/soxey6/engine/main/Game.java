@@ -2,14 +2,14 @@ package me.soxey6.engine.main;
 import java.awt.Font;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import me.soxey6.engine.managers.SceneManager;
 import me.soxey6.engine.objects.GameObject;
 import me.soxey6.engine.objects.Scene;
 import me.soxey6.engine.render.Window;
 import me.soxey6.game.scenes.MainGameScene;
-import me.soxey6.utils.ErrorHandling;
+import me.soxey6.utils.ErrorHandler;
+import me.soxey6.utils.FileHandler;
+import me.soxey6.utils.Logger;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
@@ -29,8 +29,10 @@ public class Game
 	
 	private Window window;
 	private static Game game;
-	private ErrorHandling errorHandler;
+	private ErrorHandler errorHandler;
 	private SceneManager sceneManager;
+	private FileHandler fileHandler;
+	private Logger logger;
 	
 	private long lastLogicTime = 0;
 	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
@@ -42,13 +44,20 @@ public class Game
 	 */
 	public Game(String gameName)
 	{
-		this.game=this;
+		game=this;
+		this.errorHandler = new ErrorHandler();
+		this.logger = new Logger();
+		
+		this.getLogger().log(this.getLogger().DEBUG, "Creating file manager instance");
+		this.fileHandler = new FileHandler();
+		
+		this.getLogger().log(this.getLogger().DEBUG, "Creating Scene manager instance");
 		this.sceneManager=new SceneManager();
+		
 		// Sets the game name from the constructor
 		this.gameName=gameName;
 		
 		// Creates an instance of the error handler class and sets it for later use.
-		this.errorHandler = new ErrorHandling();
 		
 		// Initializes the display and openGL
 		initDisplay();
@@ -61,10 +70,13 @@ public class Game
 		initGame();
 		
 		//Starts the game loop
+		this.getLogger().log(this.getLogger().DEBUG, "Starting game loop");
 		gameLoop();
+		this.getLogger().log(this.getLogger().DEBUG, "Game loop left, cleanup started");
 		
 		// When game loop exits, it cleans up everything.
 		cleanUp();
+		this.getLogger().log(this.getLogger().INFO, "RIP");
 	}
 
 	/**
@@ -117,15 +129,20 @@ public class Game
 	 */
 	@SuppressWarnings("static-access")
 	private void splash() {
+		long fontTime = System.currentTimeMillis();
 		
-		long startSplash = System.currentTimeMillis();
+		this.logger.log(this.logger.DEBUG, "Initializing Fonts for Splash screen");
 		
 		Font awtFont = new Font("Times New Roman", Font.BOLD, 65);
 		TrueTypeFont rgge = new TrueTypeFont(awtFont, true);
 		
-		 awtFont = new Font("Times New Roman", Font.BOLD, 24);
+		awtFont = new Font("Times New Roman", Font.BOLD, 24);
 		TrueTypeFont made = new TrueTypeFont(awtFont, true);
 		
+		this.logger.log(this.logger.INFO, "Time spent loading fonts: "+(System.currentTimeMillis()-fontTime)+"MS");
+		
+		long startSplash = System.currentTimeMillis();
+		this.logger.log(this.logger.DEBUG, "Rendering splash screen for "+this.SPLASH_LENGTH_MS+"MS");
 		while(System.currentTimeMillis()<=startSplash+SPLASH_LENGTH_MS)
 		{
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -147,8 +164,9 @@ public class Game
 	//TODO: Setup error reporting on this function
 	private void initGame()
 	{
-		new MainGameScene("Test", this);
-		this.sceneManager.switchScene("Test");
+		this.logger.log(this.logger.DEBUG, "Initializing Game");
+		new MainGameScene("Game");
+		this.sceneManager.switchScene("Game");
 	}
 
 	/**
@@ -157,8 +175,11 @@ public class Game
 	//TODO: Setup error reporting on this function
 	private void initDisplay()
 	{
+		this.logger.log(this.logger.DEBUG, "Initializing Display");
 		// This create a new window called whatever is passed through the constructor of this object.
 		window = new Window(this.gameName,800,600);
+		
+		this.logger.log(this.logger.DEBUG, "Setting up OpenGL instance");
 		GL11.glEnable(GL11.GL_TEXTURE_2D);               
 		 
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);          
@@ -199,8 +220,11 @@ public class Game
 		if(!GLOBAL_LIMIT_LOGIC||System.currentTimeMillis()>=lastLogicTime+GLOBAL_LOGIC_INCREMENT_MS){
 			for(Scene scene:this.sceneManager.getScenes())
 			{
-				if(!scene.isLimitLogic()||System.currentTimeMillis()>=scene.getLastLogicTime()+scene.getLogicIncrementMS())
-				scene.logic();
+				if(!scene.isLimitLogic()||System.currentTimeMillis()>=scene.getLastLogicTime()+scene.getLogicIncrementMS()){
+					scene.logic();
+					scene.setLastLogicTime(System.currentTimeMillis());
+				}
+				
 			}
 			//TODO: logic
 			lastLogicTime=System.currentTimeMillis();
@@ -226,21 +250,23 @@ public class Game
 		//TODO: render
 		return 0;
 	}
-	
-	/**
-	 * @return the gameName
-	 */
+
 	public String getGameName() {
 		return gameName;
 	}
-	
-	/**
-	 * @return the window
-	 */
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
+	}
+
 	public Window getWindow() {
 		return window;
 	}
-	
+
+	public void setWindow(Window window) {
+		this.window = window;
+	}
+
 	public static Game getGame() {
 		return game;
 	}
@@ -249,36 +275,68 @@ public class Game
 		Game.game = game;
 	}
 
-	/**
-	 * @return the gameObjects
-	 */
+	public ErrorHandler getErrorHandler() {
+		return errorHandler;
+	}
+
+	public void setErrorHandler(ErrorHandler errorHandler) {
+		this.errorHandler = errorHandler;
+	}
+
+	public SceneManager getSceneManager() {
+		return sceneManager;
+	}
+
+	public void setSceneManager(SceneManager sceneManager) {
+		this.sceneManager = sceneManager;
+	}
+
+	public FileHandler getFileHandler() {
+		return fileHandler;
+	}
+
+	public void setFileHandler(FileHandler fileHandler) {
+		this.fileHandler = fileHandler;
+	}
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
+	public long getLastLogicTime() {
+		return lastLogicTime;
+	}
+
+	public void setLastLogicTime(long lastLogicTime) {
+		this.lastLogicTime = lastLogicTime;
+	}
+
 	public ArrayList<GameObject> getGameObjects() {
 		return gameObjects;
 	}
-	
-	/**
-	 * @param gameName the gameName to set
-	 */
-	public void setGameName(String gameName) {
-		this.gameName = gameName;
-	}
-	
-	/**
-	 * @param window the window to set
-	 */
-	public void setWindow(Window window) {
-		this.window = window;
-	}
-	/**
-	 * @param gameObjects the gameObjects to set
-	 */
-	
+
 	public void setGameObjects(ArrayList<GameObject> gameObjects) {
 		this.gameObjects = gameObjects;
 	}
-	public void gameOver() {
-        JOptionPane.showMessageDialog(null, "Game Over, Stop hitting yourself.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-		
+
+	public boolean isGLOBAL_LIMIT_LOGIC() {
+		return GLOBAL_LIMIT_LOGIC;
+	}
+
+	public long getGLOBAL_LOGIC_INCREMENT_MS() {
+		return GLOBAL_LOGIC_INCREMENT_MS;
+	}
+
+	public boolean isSHOW_SPLASH() {
+		return SHOW_SPLASH;
+	}
+
+	public int getSPLASH_LENGTH_MS() {
+		return SPLASH_LENGTH_MS;
 	}
 	
 	

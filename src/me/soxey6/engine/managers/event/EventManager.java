@@ -1,10 +1,10 @@
-package me.soxey6.engine.managers;
+package me.soxey6.engine.managers.event;
 
 public class EventManager {
 	private static EventManager eventManager;
 	public EventManager()
 	{
-		this.eventManager=this;
+		eventManager=this;
 	}
 	//TODO: make event manager.
 	public static EventManager getEventManager() {

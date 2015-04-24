@@ -1,12 +1,12 @@
 package me.soxey6.engine.objects;
 
-import me.soxey6.engine.main.Game;
+import me.soxey6.engine.main.Wrapper;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
 
-public class GameObject
+public class GameObject extends Wrapper
 {
 	private String name;
 	private Color colour;
@@ -17,6 +17,16 @@ public class GameObject
 	private Scene scene;
 	public int direction = 0;
 	
+	/**
+	 * The basic game object, used to create any object rendered in the game
+	 * @param name
+	 * @param scene
+	 * @param colour
+	 * @param posX
+	 * @param posY
+	 * @param sizeX
+	 * @param sizeY
+	 */
 	public GameObject(String name, Scene scene,Color colour, float posX, float posY, float sizeX, float sizeY)
 	{
 		this.name=name;
@@ -27,10 +37,11 @@ public class GameObject
 		this.sizeY=sizeY;
 		this.scene=scene;
 		this.scene.getGameObjects().add(this);
+		this.getLogger().log(this.getLogger().DEBUG, "Created game object: "+name+"\nIn scene: "+this.getScene().getName()+"\n At coords: "+this.getPosX()+", "+this.getPosY() );
 	}
 	
 	/**
-	 * This function renders the object, only supports squares, this is snake, what where you expecting.
+	 * This function renders the object, only supports squares currently. This is snake, what where you expecting.
 	 */
 	public void render()
 	{
@@ -53,6 +64,9 @@ public class GameObject
 		
 	}
 	
+	/**
+	 * The input processes for the  object (For overriding)
+	 */
 	public void input()
 	{
 		
