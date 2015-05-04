@@ -1,20 +1,21 @@
 package me.soxey6.engine.main;
-import java.awt.Font;
 import java.util.ArrayList;
 
 import me.soxey6.engine.managers.SceneManager;
+import me.soxey6.engine.managers.cheat.CheatManager;
 import me.soxey6.engine.objects.GameObject;
 import me.soxey6.engine.objects.Scene;
 import me.soxey6.engine.render.Window;
-import me.soxey6.game.scenes.MainGameScene;
+import me.soxey6.game.scenes.MainMenuScene;
 import me.soxey6.utils.ErrorHandler;
 import me.soxey6.utils.FileHandler;
 import me.soxey6.utils.Logger;
+import me.soxey6.utils.RenderingUtils;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.TrueTypeFont;
 /**
+ * The game class is the entire game in a single class that can be created with an instance.
  * @author Pat Childs || Soxey6
  * @version Dev-0.0.2
  */
@@ -32,7 +33,9 @@ public class Game
 	private ErrorHandler errorHandler;
 	private SceneManager sceneManager;
 	private FileHandler fileHandler;
+	private CheatManager cheatManager;
 	private Logger logger;
+	private RenderingUtils renderingUtils;
 	
 	private long lastLogicTime = 0;
 	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
@@ -48,11 +51,14 @@ public class Game
 		this.errorHandler = new ErrorHandler();
 		this.logger = new Logger();
 		
-		this.getLogger().log(this.getLogger().DEBUG, "Creating file manager instance");
+		getLogger().log(getLogger().DEBUG, "Creating file manager instance");
 		this.fileHandler = new FileHandler();
 		
-		this.getLogger().log(this.getLogger().DEBUG, "Creating Scene manager instance");
+		getLogger().log(getLogger().DEBUG, "Creating Scene manager instance");
 		this.sceneManager=new SceneManager();
+		
+		getLogger().log(getLogger().DEBUG, "Creating Cheat manager instance");
+		this.cheatManager=new CheatManager();
 		
 		// Sets the game name from the constructor
 		this.gameName=gameName;
@@ -61,6 +67,9 @@ public class Game
 		
 		// Initializes the display and openGL
 		initDisplay();
+		// Done after avoid issues
+		getLogger().log(getLogger().DEBUG, "Creating Rendering utils instance");
+		this.renderingUtils = new RenderingUtils();
 		
 		// Engine splash
 		if(SHOW_SPLASH)
@@ -129,27 +138,13 @@ public class Game
 	 */
 	@SuppressWarnings("static-access")
 	private void splash() {
-		long fontTime = System.currentTimeMillis();
-		
-		this.logger.log(this.logger.DEBUG, "Initializing Fonts for Splash screen");
-		
-		Font awtFont = new Font("Times New Roman", Font.BOLD, 65);
-		TrueTypeFont rgge = new TrueTypeFont(awtFont, true);
-		
-		awtFont = new Font("Times New Roman", Font.BOLD, 24);
-		TrueTypeFont made = new TrueTypeFont(awtFont, true);
-		
-		this.logger.log(this.logger.INFO, "Time spent loading fonts: "+(System.currentTimeMillis()-fontTime)+"MS");
-		
 		long startSplash = System.currentTimeMillis();
 		this.logger.log(this.logger.DEBUG, "Rendering splash screen for "+this.SPLASH_LENGTH_MS+"MS");
 		while(System.currentTimeMillis()<=startSplash+SPLASH_LENGTH_MS)
 		{
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-			
-			made.drawString(400-rgge.getWidth("RGGE")/2, 300- rgge.getHeight("RGGE")+made.getHeight("Made with")-5, "Made with",Color.white);
-			rgge.drawString(400-rgge.getWidth("RGGE")/2, 300- rgge.getHeight("RGGE")/2, "RGGE",Color.white);
-			
+			getRenderingUtils().drawStringCentered(345, 260, "Made with",20 ,Color.white);
+			getRenderingUtils().drawStringCentered(400, 300, "RGGE", 68,Color.white);
 			this.window.update();
 			if(this.getWindow().getDisplay().isCloseRequested())
 				System.exit(0);
@@ -165,8 +160,8 @@ public class Game
 	private void initGame()
 	{
 		this.logger.log(this.logger.DEBUG, "Initializing Game");
-		new MainGameScene("Game");
-		this.sceneManager.switchScene("Game");
+		new MainMenuScene();
+		getSceneManager().switchScene("Main Menu");
 	}
 
 	/**
@@ -214,15 +209,16 @@ public class Game
 	 * All logic code should be placed including calling logic() in objects. 
 	 * @return Error values
 	 */
+	@SuppressWarnings("unused")
 	public int logic()
 	{
 		// Check to see if the logic needs to be limited and if so do so.
 		if(!GLOBAL_LIMIT_LOGIC||System.currentTimeMillis()>=lastLogicTime+GLOBAL_LOGIC_INCREMENT_MS){
-			for(Scene scene:this.sceneManager.getScenes())
+			for(int i = 0; i<=getSceneManager().getScenes().size()-1; i++)
 			{
-				if(!scene.isLimitLogic()||System.currentTimeMillis()>=scene.getLastLogicTime()+scene.getLogicIncrementMS()){
-					scene.logic();
-					scene.setLastLogicTime(System.currentTimeMillis());
+				if(getSceneManager().getScenes().get(i).isFocused()&&(!getSceneManager().getScenes().get(i).isLimitLogic()||System.currentTimeMillis()>=getSceneManager().getScenes().get(i).getLastLogicTime()+getSceneManager().getScenes().get(i).getLogicIncrementMS())){
+					getSceneManager().getScenes().get(i).logic();
+					getSceneManager().getScenes().get(i).setLastLogicTime(System.currentTimeMillis());
 				}
 				
 			}
@@ -299,12 +295,28 @@ public class Game
 		this.fileHandler = fileHandler;
 	}
 
+	public CheatManager getCheatManager() {
+		return cheatManager;
+	}
+
+	public void setCheatManager(CheatManager cheatManager) {
+		this.cheatManager = cheatManager;
+	}
+
 	public Logger getLogger() {
 		return logger;
 	}
 
 	public void setLogger(Logger logger) {
 		this.logger = logger;
+	}
+
+	public RenderingUtils getRenderingUtils() {
+		return renderingUtils;
+	}
+
+	public void setRenderingUtils(RenderingUtils renderingUtils) {
+		this.renderingUtils = renderingUtils;
 	}
 
 	public long getLastLogicTime() {

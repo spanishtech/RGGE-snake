@@ -2,6 +2,9 @@ package me.soxey6.utils;
 
 import me.soxey6.engine.main.Game;
 
+/**
+ * This class will allow logging of any type of information into both 
+ */
 public class Logger
 {
 	private final boolean DEBUG_MODE = true;
@@ -16,9 +19,6 @@ public class Logger
 	
 	private int loggingLevel = 0;
 	
-	/**
-	 * This class is for logging things.
-	 */
 	public Logger()
 	{
 		logger=this;

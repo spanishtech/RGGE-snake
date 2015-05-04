@@ -4,6 +4,9 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 @SuppressWarnings("static-access")
+/**
+ * This class is the window and it's controls
+ */
 public class Window
 {
 	private String name;

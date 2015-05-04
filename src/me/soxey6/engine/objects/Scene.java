@@ -42,7 +42,7 @@ public class Scene extends Wrapper{
 		this.gameObjects=new ArrayList<GameObject>();
 		
 		//Currently stubs
-		this.gui = new Gui();
+		this.gui = new Gui(this);
 		this.setEventManager(EventManager.getEventManager());
 		this.setSceneManager(SceneManager.getSceneManager());
 		this.getSceneManager().addScene(this);

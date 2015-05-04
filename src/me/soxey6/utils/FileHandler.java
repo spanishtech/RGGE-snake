@@ -1,13 +1,13 @@
 package me.soxey6.utils;
 
 public class FileHandler {
-	//TODO: Add content to these stubs
-	private static FileHandler fileHandler;
-	
 	/**
 	 * This is the file handler, all file functions are put here.
 	 * All functions are threaded.
 	 */
+	private static FileHandler fileHandler;
+	
+
 	public FileHandler()
 	{
 		fileHandler=this;

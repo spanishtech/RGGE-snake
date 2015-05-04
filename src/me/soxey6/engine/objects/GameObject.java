@@ -5,7 +5,9 @@ import me.soxey6.engine.main.Wrapper;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
-
+/**
+	 * The basic game object, used to create any object rendered in the game
+*/
 public class GameObject extends Wrapper
 {
 	private String name;
@@ -121,6 +123,8 @@ public class GameObject extends Wrapper
 	}
 
 	/**
+	 * What's my, what's my, what's my scene. Oh, it's this one.<br>
+	 * https://www.youtube.com/watch?v=ugA5bLqivkY <- Context
 	 * @return the game
 	 */
 	public Scene getScene()

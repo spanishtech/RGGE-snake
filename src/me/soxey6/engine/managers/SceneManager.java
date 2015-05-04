@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import me.soxey6.engine.objects.Scene;
 
+/**
+ * This manager will manage different scenes and allow scene switching and force the logic upon them when needed. 
+ * @author pchilds
+ *
+ */
 public class SceneManager {
 	private static SceneManager sceneManager;
 	private ArrayList<Scene> scenes = new ArrayList<Scene>();

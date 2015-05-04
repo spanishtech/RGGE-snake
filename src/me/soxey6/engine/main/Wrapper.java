@@ -1,23 +1,34 @@
 package me.soxey6.engine.main;
 
 import me.soxey6.engine.managers.SceneManager;
+import me.soxey6.engine.managers.cheat.CheatManager;
 import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.utils.ErrorHandler;
 import me.soxey6.utils.Logger;
+import me.soxey6.utils.RenderingUtils;
 
+/**
+ * This wrapper is used for calling other classes that are semi-static. Managers and such. This should be extended to most classes in the game as it allows access to them easily.
+ * @author pchilds
+ *
+ */
 public class Wrapper {
 	private EventManager eventManager;
 	private SceneManager sceneManager;
+	private CheatManager cheatManager;
 	private ErrorHandler errorHandler;
+	private RenderingUtils renderingUtils;
 	private Logger logger;
 	private Game game;
 	
 	public Wrapper()
 	{
 		this.sceneManager = SceneManager.getSceneManager();
-		this.game=Game.getGame();
+		this.cheatManager = CheatManager.getCheatManager();
 		this.errorHandler = ErrorHandler.getErrorHandler();
+		this.renderingUtils = RenderingUtils.getRenderingUtils();
 		this.logger = Logger.getLogger();
+		this.game=Game.getGame();
 	}
 
 	public EventManager getEventManager() {
@@ -36,12 +47,28 @@ public class Wrapper {
 		this.sceneManager = sceneManager;
 	}
 
+	public CheatManager getCheatManager() {
+		return cheatManager;
+	}
+
+	public void setCheatManager(CheatManager cheatManager) {
+		this.cheatManager = cheatManager;
+	}
+
 	public ErrorHandler getErrorHandler() {
 		return errorHandler;
 	}
 
 	public void setErrorHandler(ErrorHandler errorHandler) {
 		this.errorHandler = errorHandler;
+	}
+
+	public RenderingUtils getRenderingUtils() {
+		return renderingUtils;
+	}
+
+	public void setRenderingUtils(RenderingUtils renderingUtils) {
+		this.renderingUtils = renderingUtils;
 	}
 
 	public Logger getLogger() {

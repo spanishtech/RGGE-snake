@@ -1,7 +1,7 @@
 package me.soxey6.game.objects;
 
 import me.soxey6.engine.objects.GameObject;
-import me.soxey6.engine.objects.Scene;
+import me.soxey6.game.scenes.MainGameScene;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
@@ -9,11 +9,17 @@ import org.newdawn.slick.Color;
 public class SnakeHead extends GameObject {
 	private int direction;
 	private float speed;
+	private MainGameScene mainGame;
 	
-	public SnakeHead(String name, Scene scene, Color colour, float posX, float posY, float sizeX, float sizeY) {
+	/**
+	 * This Class had to be jerry-rigged to work with the new scene engine. Keep that in mind.
+	 */
+	public SnakeHead(String name, MainGameScene scene, Color colour, float posX, float posY, float sizeX, float sizeY) {
 		super(name, scene, colour, posX, posY, sizeX, sizeY);
+		this.mainGame=scene;
 		this.direction=0;
 		this.speed=20;
+		this.mainGame.getSnake().add(this);
 	}
 	
 	@Override
