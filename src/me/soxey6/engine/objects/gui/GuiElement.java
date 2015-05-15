@@ -1,4 +1,4 @@
-package me.soxey6.engine.objects;
+package me.soxey6.engine.objects.gui;
 
 import me.soxey6.engine.main.Wrapper;
 
@@ -12,7 +12,7 @@ public class GuiElement extends Wrapper
 	private float posX;
 	private float posY;
 	private float sizeX;
-	private float sizeY;	
+	private float sizeY;
 	/**
 	 * The basic GuiElement class used for creating any UI element
 	 * @param name
@@ -32,7 +32,9 @@ public class GuiElement extends Wrapper
 		this.gui=gui;
 		
 		getGui().getGuiElements().add(this);
-		this.getLogger().log(this.getLogger().DEBUG, "Created game object: "+name+"\nIn scene: "+this.getGui().getScene().getName()+"\n At coords: "+this.getPosX()+", "+this.getPosY() );
+		this.getLogger().log(this.getLogger().DEBUG, "Created GUI Element: "+name+"\nIn scene: "+this.getGui().getScene().getName()+"\n At coords: "+this.getPosX()+", "+this.getPosY());
+		getEventManager().trigger("GUIELEMENT_CREATED");
+		getEventManager().trigger(getName().toUpperCase()+"_CREATED");
 	}
 	
 
@@ -158,5 +160,6 @@ public class GuiElement extends Wrapper
 	{
 		this.sizeY = sizeY;
 	}
+
 	
 }

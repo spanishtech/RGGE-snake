@@ -1,6 +1,7 @@
 package me.soxey6.utils;
 
-public class FileHandler {
+
+public class FileHandler{
 	/**
 	 * This is the file handler, all file functions are put here.
 	 * All functions are threaded.

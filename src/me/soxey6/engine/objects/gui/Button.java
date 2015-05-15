@@ -1,4 +1,6 @@
-package me.soxey6.engine.objects;
+package me.soxey6.engine.objects.gui;
+
+import me.soxey6.engine.managers.input.Click;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
@@ -13,33 +15,50 @@ public class Button extends GuiElement{
 	private boolean hover;
 	private Color textColor;
 	private Color buttonColor;
-	
 	public Button(String name, String buttonText, Gui gui, Color textColor, Color buttonColor, float posX, float posY, float sizeX, float sizeY) {
 		super(name, gui, posX, posY, sizeX, sizeY);
 		this.buttonText=buttonText;
 		this.textColor=textColor;
 		this.buttonColor=buttonColor;
+			
+	}
+	
+	public Button(String name, String buttonText, Gui gui, Color textColor, Color buttonColor, float posX, float posY) {
+		super(name, gui, posX, posY, 0, 0);
+		this.setSizeX(getRenderingUtils().getWidth(buttonText, 24));
+		this.setSizeY(getRenderingUtils().getHeight(buttonText, 24));
+		this.buttonText=buttonText;
+		this.textColor=textColor;
+		this.buttonColor=buttonColor;
+			
 	}
 	
 	@Override
 	public void input()
 	{
+		if(!Mouse.isButtonDown(0)&&getGui().isOldInput())
+			getGui().setOldInput(false);
 		// TODO: Replace "getGui().getScene().getGame().getWindow().getSy()" with a constant.
 		// Check if they're clicking within the button keeping in mind that Slick renders text upside-down so we need to flip all Y Calculations
 		if(Mouse.getX()>=getPosX()&&Mouse.getX()<=getPosX()+getSizeX()&& getGame().getWindow().getSy()-Mouse.getY()>=getPosY()&&getGame().getWindow().getSy()-Mouse.getY()<=getPosY()+getSizeY())
 		{
 			this.hover=true;
 			onHover(Mouse.getX(), Mouse.getY());
-			if(Mouse.isButtonDown(0))
+			if(Mouse.isButtonDown(0)&&!getGui().isOldInput())
 			{
-				
+				getGui().setOldInput(true);
 				// register the click
 				click = new Click(Mouse.getX(), Mouse.getY());
 			}
 			
 		}else
-			this.hover=false;
+			hover=false;
 	}
+
+	/**
+	 * Checks if the current mouse down is new
+	 * @return
+	 */
 
 	@Override
 	public void logic()

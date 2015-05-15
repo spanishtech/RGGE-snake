@@ -24,6 +24,11 @@ public class Logger
 		logger=this;
 	}
 	
+	/**
+	 * This function logs errors with varying levels
+	 * @param int level - Used for sorting the logs
+	 * @param Object object - The item to be printed to the logs.
+	 */
 	public void log(int level, Object object)
 	{
 		if(level>=this.loggingLevel)
@@ -34,6 +39,11 @@ public class Logger
 		}
 	}
 	
+	/**
+	 * This function appends the log to the end of the log file.
+	 * @param int level - Used for sorting the logs
+	 * @param Object object - The item to be printed to the logs.
+	 */
 	private void appendLog(int level, Object object)
 	{
 		String stringToPrint = "";
@@ -55,6 +65,11 @@ public class Logger
 		FileHandler.getFileHandler().appendFile(Game.getGame().getGameName()+".log", stringToPrint+"\n");
 	}
 	
+	/**
+	 * This function prints the log to console
+	 * @param int level - Used for sorting the logs
+	 * @param Object object - The item to be printed to the logs.
+	 */
 	private void printLog(int level, Object object)
 	{
 		String stringToPrint = "";
@@ -75,8 +90,7 @@ public class Logger
 		stringToPrint+=object.toString();
 		System.out.println(stringToPrint);
 	}
-	//TODO: Create logging class that will log stuff
-
+	
 	public static Logger getLogger() {
 		return logger;
 	}

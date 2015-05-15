@@ -3,8 +3,10 @@ import java.util.ArrayList;
 
 import me.soxey6.engine.managers.SceneManager;
 import me.soxey6.engine.managers.cheat.CheatManager;
+import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.engine.objects.GameObject;
 import me.soxey6.engine.objects.Scene;
+import me.soxey6.engine.objects.Setting;
 import me.soxey6.engine.render.Window;
 import me.soxey6.game.scenes.MainMenuScene;
 import me.soxey6.utils.ErrorHandler;
@@ -30,12 +32,16 @@ public class Game
 	
 	private Window window;
 	private static Game game;
+	private EventManager eventManager;
 	private ErrorHandler errorHandler;
 	private SceneManager sceneManager;
 	private FileHandler fileHandler;
 	private CheatManager cheatManager;
 	private Logger logger;
 	private RenderingUtils renderingUtils;
+	private Settings settings;
+	
+	private boolean DEBUG = false;
 	
 	private long lastLogicTime = 0;
 	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
@@ -48,8 +54,11 @@ public class Game
 	public Game(String gameName)
 	{
 		game=this;
-		this.errorHandler = new ErrorHandler();
+		
 		this.logger = new Logger();
+		this.errorHandler = new ErrorHandler();
+		this.eventManager = new EventManager();
+		getLogger().log(getLogger().INFO, "Respawned");
 		
 		getLogger().log(getLogger().DEBUG, "Creating file manager instance");
 		this.fileHandler = new FileHandler();
@@ -60,6 +69,8 @@ public class Game
 		getLogger().log(getLogger().DEBUG, "Creating Cheat manager instance");
 		this.cheatManager=new CheatManager();
 		
+		getLogger().log(getLogger().DEBUG, "Creating Settings instance");
+		this.settings = new Settings();
 		// Sets the game name from the constructor
 		this.gameName=gameName;
 		
@@ -77,7 +88,7 @@ public class Game
 		
 		//Creates the objects to be used in the game.
 		initGame();
-		
+		initSettings();
 		//Starts the game loop
 		this.getLogger().log(this.getLogger().DEBUG, "Starting game loop");
 		gameLoop();
@@ -144,7 +155,7 @@ public class Game
 		{
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			getRenderingUtils().drawStringCentered(345, 260, "Made with",20 ,Color.white);
-			getRenderingUtils().drawStringCentered(400, 300, "RGGE", 68,Color.white);
+			getRenderingUtils().drawStringCentered(400, 300, "RGGE", 65,Color.white);
 			this.window.update();
 			if(this.getWindow().getDisplay().isCloseRequested())
 				System.exit(0);
@@ -193,6 +204,18 @@ public class Game
 	}
 
 	/**
+	 * This function initializes basic settings
+	 */
+	public void initSettings()
+	{
+		getLogger().log(getLogger().DEBUG, "Setting up settings");
+		
+		getSettings().addSetting(new Setting("FRAME_LIMIT", 0));
+		getSettings().addSetting(new Setting("RESOLUTION_X", 600));
+		getSettings().addSetting(new Setting("RESOLUTION_Y", 800));
+	}
+	
+	/**
 	 * This function when called will update the inputs.
 	 * @return Error values
 	 */
@@ -200,6 +223,7 @@ public class Game
 	{
 		for(Scene scene:this.sceneManager.getScenes())
 		{
+			if(scene.isFocused())
 			scene.input();
 		}
 		return 0;
@@ -240,7 +264,9 @@ public class Game
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 		for(Scene scene:this.sceneManager.getScenes())
 		{
-			scene.render();
+			if(scene.isFocused())
+				scene.render();
+		
 		}
 		this.window.update();
 		//TODO: render
@@ -319,6 +345,14 @@ public class Game
 		this.renderingUtils = renderingUtils;
 	}
 
+	public Settings getSettings() {
+		return settings;
+	}
+
+	public void setSettings(Settings settings) {
+		this.settings = settings;
+	}
+
 	public long getLastLogicTime() {
 		return lastLogicTime;
 	}
@@ -349,6 +383,30 @@ public class Game
 
 	public int getSPLASH_LENGTH_MS() {
 		return SPLASH_LENGTH_MS;
+	}
+
+	public boolean isDEBUG() {
+		return DEBUG;
+	}
+
+	public void setDEBUG(boolean dEBUG) {
+		DEBUG = dEBUG;
+	}
+
+	/**
+	 * @return the eventManager
+	 */
+	public EventManager getEventManager()
+	{
+		return eventManager;
+	}
+
+	/**
+	 * @param eventManager the eventManager to set
+	 */
+	public void setEventManager(EventManager eventManager)
+	{
+		this.eventManager = eventManager;
 	}
 	
 	

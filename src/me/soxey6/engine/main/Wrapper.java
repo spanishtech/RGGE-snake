@@ -12,23 +12,26 @@ import me.soxey6.utils.RenderingUtils;
  * @author pchilds
  *
  */
-public class Wrapper {
+public class Wrapper{
+	private Game game;
 	private EventManager eventManager;
 	private SceneManager sceneManager;
 	private CheatManager cheatManager;
 	private ErrorHandler errorHandler;
 	private RenderingUtils renderingUtils;
 	private Logger logger;
-	private Game game;
+	private Settings settings;
 	
 	public Wrapper()
 	{
+		this.game=Game.getGame();
+		this.eventManager = EventManager.getEventManager();
 		this.sceneManager = SceneManager.getSceneManager();
 		this.cheatManager = CheatManager.getCheatManager();
 		this.errorHandler = ErrorHandler.getErrorHandler();
 		this.renderingUtils = RenderingUtils.getRenderingUtils();
 		this.logger = Logger.getLogger();
-		this.game=Game.getGame();
+		this.settings = Settings.getSettings();
 	}
 
 	public EventManager getEventManager() {
@@ -85,5 +88,13 @@ public class Wrapper {
 
 	public void setGame(Game game) {
 		this.game = game;
+	}
+
+	public Settings getSettings() {
+		return settings;
+	}
+
+	public void setSettings(Settings settings) {
+		this.settings = settings;
 	}
 }

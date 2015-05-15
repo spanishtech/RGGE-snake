@@ -5,7 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 @SuppressWarnings("static-access")
 /**
- * This class is the window and it's controls
+ * Wrapper for OpenGL display
  */
 public class Window
 {

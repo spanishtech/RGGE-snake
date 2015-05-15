@@ -40,6 +40,8 @@ public class GameObject extends Wrapper
 		this.scene=scene;
 		this.scene.getGameObjects().add(this);
 		this.getLogger().log(this.getLogger().DEBUG, "Created game object: "+name+"\nIn scene: "+this.getScene().getName()+"\n At coords: "+this.getPosX()+", "+this.getPosY() );
+		getEventManager().trigger("GAMEOBJECT_CREATED");
+		getEventManager().trigger(getName().toUpperCase()+"_CREATED");
 	}
 	
 	/**

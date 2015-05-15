@@ -1,4 +1,4 @@
-package me.soxey6.engine.objects;
+package me.soxey6.engine.managers.input;
 
 public class Click {
 	private int x;

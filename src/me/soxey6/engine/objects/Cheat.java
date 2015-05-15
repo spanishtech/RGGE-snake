@@ -10,16 +10,20 @@ public class Cheat extends Wrapper{
 	{
 		this.name=name;
 		this.keyCombination = keyCombination;
+		getEventManager().trigger("CHEAT_CREATED");
+		getEventManager().trigger(getName().toUpperCase()+"_CREATED");
 	}
 	
 	/**
-	 * I'm a pansexual gender fluid non-binary mocha frappuccino with dual acting hydraulic cynlinder and leather grip swiss army knife
+	 * I'm a pansexual gender fluid non-binary mocha frappuccino with dual acting hydraulic cylinder and leather grip Swiss army knife
 	 * #Triggered
 	 * Override only pls
-	 * @param scene
+	 * @param Scene scene - The scene in which it was triggered
 	 */
 	public void triggered(Scene scene)
 	{
+		getEventManager().trigger("CHEAT_TRIGGERED");
+		getEventManager().trigger(getName().toUpperCase()+"_TRGGERED");
 	}
 
 	public String getName() {

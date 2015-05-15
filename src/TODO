@@ -1,12 +1,14 @@
 This is the todo file. This file contains information using the Todo.txt format.
 
 TODO:
-(1) Allow errors in objects that are called inside the main functions to relay their errors to the main function +ErrorHandling
-(2) Setup constants +Constants
-(3) Create a sound manager or sound utility class
-(4) Create a shader engine
-(5) Create texture rendering ability
-(6) Setup event system +EventSystem
-(7) Create more game-play +Game
-(8) GUNS +Cheats
-(9) Create a cheat where typing in "VENGA" will provide the track VengaBus +Cheats
+(0)		INSERT EVENTS
+(1)		Allow errors in objects that are called inside the main functions to relay their errors to the main function +ErrorHandling
+(2)		Setup constants +Constants
+(3)		Create a sound manager or sound utility class
+(4)		Create a shader engine
+(5)		Create texture rendering ability
+(6)		Setup event system +EventSystem
+(7)		Create more game-play +Game
+(8)		GUNS +Cheats
+(9)		Make graphics scale based on resolution +Rendering
+(10)	Create a cheat where typing in "VENGA" will provide the track VengaBus +Cheats

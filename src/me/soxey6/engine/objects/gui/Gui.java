@@ -1,16 +1,20 @@
-package me.soxey6.engine.objects;
+package me.soxey6.engine.objects.gui;
 
 import java.util.ArrayList;
+
+import me.soxey6.engine.objects.Scene;
 /**
  * This is a gui class that stores Gui elements and manages them to a small extent, every scene should have one.
  * @author pchilds
  *
  */
 public class Gui {
+	private boolean oldInput;
 	
 	public Gui(Scene scene)
 	{
 		this.scene=scene;
+		this.oldInput=true;
 	}
 	
 	private Scene scene;
@@ -71,6 +75,22 @@ public class Gui {
 	public void setScene(Scene scene)
 	{
 		this.scene = scene;
+	}
+
+	/**
+	 * @return the oldInput
+	 */
+	public boolean isOldInput()
+	{
+		return oldInput;
+	}
+
+	/**
+	 * @param oldInput the oldInput to set
+	 */
+	public void setOldInput(boolean oldInput)
+	{
+		this.oldInput = oldInput;
 	}
 
 }

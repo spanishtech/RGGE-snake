@@ -6,6 +6,7 @@ import me.soxey6.engine.main.Game;
 import me.soxey6.engine.main.Wrapper;
 import me.soxey6.engine.managers.SceneManager;
 import me.soxey6.engine.managers.event.EventManager;
+import me.soxey6.engine.objects.gui.Gui;
 @SuppressWarnings("static-access")
 /**
  * Scene class:
@@ -41,22 +42,22 @@ public class Scene extends Wrapper{
 		
 		this.gameObjects=new ArrayList<GameObject>();
 		
-		//Currently stubs
 		this.gui = new Gui(this);
-		this.setEventManager(EventManager.getEventManager());
-		this.setSceneManager(SceneManager.getSceneManager());
 		this.getSceneManager().addScene(this);
 		
 		// Log the creation
 		this.getLogger().log(this.getLogger().DEBUG, "Creating Scene: "+this.getName());
+		getEventManager().trigger(getName().toUpperCase()+"_CREATED");
 
 	}
 	
 	public void focusChange(boolean focused)
 	{
+		getEventManager().trigger(getName().toUpperCase()+"_FOCUS_CHANGE");
 		if(focused)
 		// Set window title
 		game.getWindow().getDisplay().setTitle(this.game.getGameName()+" - "+this.title);
+		getGui().setOldInput(true);
 	}
 	
 	/**

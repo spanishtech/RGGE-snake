@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Y define the specific error/warning.
  * @author Soxey6
  */
-public class ErrorHandler {
+public class ErrorHandler{
 	/**
 	 * An unknown error with input
 	 * Value is 100
