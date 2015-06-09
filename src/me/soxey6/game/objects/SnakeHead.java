@@ -1,12 +1,13 @@
 package me.soxey6.game.objects;
 
+import me.soxey6.engine.managers.event.EventCallback;
 import me.soxey6.engine.objects.GameObject;
 import me.soxey6.game.scenes.MainGameScene;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
-public class SnakeHead extends GameObject {
+public class SnakeHead extends GameObject implements EventCallback{
 	private int direction;
 	private float speed;
 	private MainGameScene mainGame;
@@ -16,6 +17,12 @@ public class SnakeHead extends GameObject {
 	 */
 	public SnakeHead(String name, MainGameScene scene, Color colour, float posX, float posY, float sizeX, float sizeY) {
 		super(name, scene, colour, posX, posY, sizeX, sizeY);
+		getEventManager().registerHook(Keyboard.KEY_W+"_DOWN", this);
+		getEventManager().registerHook(Keyboard.KEY_S+"_DOWN", this);
+		getEventManager().registerHook(Keyboard.KEY_A+"_DOWN", this);
+		getEventManager().registerHook(Keyboard.KEY_D+"_DOWN", this);
+		getEventManager().registerHook(Keyboard.KEY_SPACE+"_DOWN",this);
+
 		this.mainGame=scene;
 		this.direction=0;
 		this.speed=20;
@@ -39,30 +46,42 @@ public class SnakeHead extends GameObject {
 		{
 			this.setPosX(this.getPosX()-this.getSpeed());
 		}
-		/*for(GameObject gameObject : this.getGame().getGameObjects())
-		{
-			if((this.getPosX()==gameObject.getPosX()&&this.getPosY()==gameObject.getPosY())&&!(gameObject instanceof SnakeHead))
-			{
-				//this.getGame().gameOver();
-			}
-		}*/
 	}
 	
+
 	@Override
-	public void input()
+	public void callback(String eventName)
 	{
-		if(Keyboard.isKeyDown(Keyboard.KEY_D))
+		// Controlls
+		if(eventName.equalsIgnoreCase(Keyboard.KEY_D+"_DOWN")&&getDirection()!=3)
 		{
-			this.setDirection(1);
-		}else if(Keyboard.isKeyDown(Keyboard.KEY_A))
+			setDirection(1);
+		}else if(eventName.equalsIgnoreCase(Keyboard.KEY_A+"_DOWN")&&getDirection()!=1)
 		{
-			this.setDirection(3);
-		}else if(Keyboard.isKeyDown(Keyboard.KEY_W))
+			setDirection(3);
+		}else if(eventName.equalsIgnoreCase(Keyboard.KEY_W+"_DOWN")&&getDirection()!=0)
 		{
-			this.setDirection(2);
-		}else if(Keyboard.isKeyDown(Keyboard.KEY_S))
+			setDirection(2);
+		}else if(eventName.equalsIgnoreCase(Keyboard.KEY_S+"_DOWN")&&getDirection()!=2)
 		{
-			this.setDirection(0);
+			setDirection(0);
+		}else if(eventName.equalsIgnoreCase(Keyboard.KEY_SPACE+"_DOWN"))
+		{
+			switch(getDirection())
+			{
+				case 0:
+					new Bullet("0", getScene(), getColour(), getPosX(), getPosY()+getSpeed(), getSizeX(), getSizeY(), getDirection(), getSpeed());
+					break;
+				case 1:
+					new Bullet("0", getScene(), getColour(), getPosX()+getSpeed(), getPosY(), getSizeX(), getSizeY(), getDirection(), getSpeed());
+					break;
+				case 2:
+					new Bullet("0", getScene(), getColour(), getPosX(), getPosY()-getSpeed(), getSizeX(), getSizeY(), getDirection(), getSpeed());
+					break;
+				case 3:
+					new Bullet("0", getScene(), getColour(), getPosX()-getSpeed(), getPosY(), getSizeX(), getSizeY(), getDirection(), getSpeed());
+					break;
+			}
 		}
 	}
 	
@@ -81,5 +100,6 @@ public class SnakeHead extends GameObject {
 	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
+
 
 }

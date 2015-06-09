@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import me.soxey6.engine.managers.SceneManager;
 import me.soxey6.engine.managers.cheat.CheatManager;
 import me.soxey6.engine.managers.event.EventManager;
+import me.soxey6.engine.managers.input.InputManager;
+import me.soxey6.engine.managers.time.Timer;
 import me.soxey6.engine.objects.GameObject;
-import me.soxey6.engine.objects.Scene;
 import me.soxey6.engine.objects.Setting;
 import me.soxey6.engine.render.Window;
 import me.soxey6.game.scenes.MainMenuScene;
@@ -37,12 +38,15 @@ public class Game
 	private SceneManager sceneManager;
 	private FileHandler fileHandler;
 	private CheatManager cheatManager;
+	private Timer timer;
 	private Logger logger;
 	private RenderingUtils renderingUtils;
 	private Settings settings;
+	private InputManager inputManager;
 	
 	private boolean DEBUG = false;
 	
+	private long lastRenderTime = 0;
 	private long lastLogicTime = 0;
 	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 	
@@ -71,6 +75,13 @@ public class Game
 		
 		getLogger().log(getLogger().DEBUG, "Creating Settings instance");
 		this.settings = new Settings();
+		
+		getLogger().log(getLogger().DEBUG, "Creating Input Manager Instance");
+		this.inputManager = new InputManager();
+		
+		getLogger().log(getLogger().DEBUG, "Creating Timer Instance");
+		this.timer = new Timer();
+		
 		// Sets the game name from the constructor
 		this.gameName=gameName;
 		
@@ -78,13 +89,15 @@ public class Game
 		
 		// Initializes the display and openGL
 		initDisplay();
+		
 		// Done after avoid issues
 		getLogger().log(getLogger().DEBUG, "Creating Rendering utils instance");
 		this.renderingUtils = new RenderingUtils();
 		
 		// Engine splash
 		if(SHOW_SPLASH)
-		splash();
+			// Magikarp
+			splash();
 		
 		//Creates the objects to be used in the game.
 		initGame();
@@ -221,11 +234,7 @@ public class Game
 	 */
 	public int input()
 	{
-		for(Scene scene:this.sceneManager.getScenes())
-		{
-			if(scene.isFocused())
-			scene.input();
-		}
+		inputManager.input();
 		return 0;
 	}
 	
@@ -233,11 +242,11 @@ public class Game
 	 * All logic code should be placed including calling logic() in objects. 
 	 * @return Error values
 	 */
-	@SuppressWarnings("unused")
 	public int logic()
 	{
+		getTimer().tick();
 		// Check to see if the logic needs to be limited and if so do so.
-		if(!GLOBAL_LIMIT_LOGIC||System.currentTimeMillis()>=lastLogicTime+GLOBAL_LOGIC_INCREMENT_MS){
+		/*if(!GLOBAL_LIMIT_LOGIC||System.currentTimeMillis()>=lastLogicTime+GLOBAL_LOGIC_INCREMENT_MS){
 			for(int i = 0; i<=getSceneManager().getScenes().size()-1; i++)
 			{
 				if(getSceneManager().getScenes().get(i).isFocused()&&(!getSceneManager().getScenes().get(i).isLimitLogic()||System.currentTimeMillis()>=getSceneManager().getScenes().get(i).getLastLogicTime()+getSceneManager().getScenes().get(i).getLogicIncrementMS())){
@@ -249,7 +258,7 @@ public class Game
 			//TODO: logic
 			lastLogicTime=System.currentTimeMillis();
 			return 0;
-		}
+		}*/
 		return 0;
 		
 	}
@@ -260,12 +269,20 @@ public class Game
 	 */
 	public int render()
 	{
+		// Limit the frames based on the settings.
+		if(settings.getSetting("FRAME_LIMIT").getValueInt()!=0)
+		{
+			if(System.currentTimeMillis()<=lastRenderTime+(1000/settings.getSetting("FRAME_LIMIT").getValueInt()))
+				return 0;
+		}
+		
+		lastRenderTime=System.currentTimeMillis();
 		// Clear the screen and depth buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
-		for(Scene scene:this.sceneManager.getScenes())
+		for(int i=0; i<=getSceneManager().getScenes().size()-1;i++)
 		{
-			if(scene.isFocused())
-				scene.render();
+			if(getSceneManager().getScenes().get(i).isFocused())
+				getSceneManager().getScenes().get(i).render();
 		
 		}
 		this.window.update();
@@ -327,6 +344,22 @@ public class Game
 
 	public void setCheatManager(CheatManager cheatManager) {
 		this.cheatManager = cheatManager;
+	}
+
+	/**
+	 * @return the timer
+	 */
+	public Timer getTimer()
+	{
+		return timer;
+	}
+
+	/**
+	 * @param timer the timer to set
+	 */
+	public void setTimer(Timer timer)
+	{
+		this.timer = timer;
 	}
 
 	public Logger getLogger() {

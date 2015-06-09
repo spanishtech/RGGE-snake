@@ -12,6 +12,7 @@ import me.soxey6.utils.Logger;
  *
  */
 public class Settings{
+	// A hashmap of the settings for easy searching and retrieving of them
 	private HashMap<String, Setting> settingsList = new HashMap<String, Setting>();
 	private static Settings settings;
 	
@@ -20,29 +21,41 @@ public class Settings{
 		settings=this;
 	}
 	
+	/**
+	 * Add a setting to the hashmap for easy retrieval 
+	 * @param String name - The name that the setting will be retrieved with
+	 * @param Setting setting - The setting to store
+	 */
 	public void addSetting(String name,Setting setting)
 	{
 		Logger.getLogger().log(Logger.getLogger().DEBUG, "Adding setting "+name);
 		settingsList.put(name, setting);
 	}
 	
+	/**
+	 * Add a setting to the hashmap for easy retrieval 
+	 * @param Setting setting - The setting to store
+	 */
 	public void addSetting(Setting setting)
 	{
 		Logger.getLogger().log(Logger.getLogger().DEBUG, "Adding setting "+setting.getName());
 		settingsList.put(setting.getName(), setting);
 	}
 	
+	/**
+	 * Retrieves a setting by name
+	 * @param String name - The name that the setting will be retrieved
+	 */
 	public Setting getSetting(String name)
 	{
 		return settingsList.get(name);
 	}
 	
-	public Setting getSetting(Setting setting)
-	{
-		return settingsList.get(setting.getName());
-	}
-	
-	
+	/**
+	 * Change a settings value with a string
+	 * @param String name - The name of the setting to update
+	 * @param String value - The value to update the setting with
+	 */
 	public void updateSetting(String name, String value)
 	{
 		Logger.getLogger().log(Logger.getLogger().DEBUG, "Updating setting "+name+" to "+value);
@@ -50,31 +63,18 @@ public class Settings{
 		EventManager.getEventManager().trigger(name.toUpperCase()+"_UPDATED");
 		settingsList.get(name).setValue(value);
 	}
-
 	
-	public void updateSetting(Setting setting, String value)
-	{
-		Logger.getLogger().log(Logger.getLogger().DEBUG, "Updating setting "+setting.getName()+" to "+value);
-		EventManager.getEventManager().trigger("SETTING_UPDATE");
-		EventManager.getEventManager().trigger(setting.getName().toUpperCase()+"_UPDATED");
-		settingsList.get(setting.getName()).setValue(value);
-	}
-	
+	/**
+	 * Change a settings value with a string
+	 * @param String name - The name of the setting to update
+	 * @param int value - The value to update the setting with
+	 */
 	public void updateSetting(String name, int value)
 	{
 		Logger.getLogger().log(Logger.getLogger().DEBUG, "Updating setting "+name+" to "+value);
 		EventManager.getEventManager().trigger("SETTING_UPDATE");
 		EventManager.getEventManager().trigger(name.toUpperCase()+"_UPDATED");
 		settingsList.get(name).setValue(value);
-	}
-
-	
-	public void updateSetting(Setting setting, int value)
-	{
-		Logger.getLogger().log(Logger.getLogger().DEBUG, "Updating setting "+setting.getName()+" to "+value);
-		EventManager.getEventManager().trigger("SETTING_UPDATE");
-		EventManager.getEventManager().trigger(setting.getName().toUpperCase()+"_UPDATED");
-		settingsList.get(setting.getName()).setValue(value);
 	}
 
 	public HashMap<String, Setting> getSettingsList() {

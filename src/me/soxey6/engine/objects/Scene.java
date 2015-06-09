@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import me.soxey6.engine.main.Game;
 import me.soxey6.engine.main.Wrapper;
-import me.soxey6.engine.managers.SceneManager;
-import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.engine.objects.gui.Gui;
 @SuppressWarnings("static-access")
 /**
@@ -57,7 +55,6 @@ public class Scene extends Wrapper{
 		if(focused)
 		// Set window title
 		game.getWindow().getDisplay().setTitle(this.game.getGameName()+" - "+this.title);
-		getGui().setOldInput(true);
 	}
 	
 	/**

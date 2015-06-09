@@ -46,21 +46,9 @@ public class Options extends Scene
 			@Override
 			public void onClick(int posX, int posY)
 			{
-				getGame().getSceneManager().switchScene("Main Menu");
+				getSceneManager().switchScene("Main Menu");
 			}
 		});
-	}
-
-	@Override
-	public void input()
-	{
-		getCheatManager().cheatInputCheck();
-		for(GameObject gameObject:this.getGameObjects())
-		{
-			gameObject.input();
-		}
-		getGui().input();
-
 	}
 	
 	@Override

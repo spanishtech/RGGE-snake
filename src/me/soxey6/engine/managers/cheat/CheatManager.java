@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import me.soxey6.engine.managers.cheat.cheats.IDKFA;
 import me.soxey6.engine.managers.cheat.cheats.Konami;
+import me.soxey6.engine.managers.event.EventCallback;
+import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.engine.objects.Cheat;
 import me.soxey6.engine.objects.Scene;
 import me.soxey6.utils.Logger;
@@ -15,7 +17,7 @@ import org.lwjgl.input.Keyboard;
  * @author pchilds
  *
  */
-public class CheatManager{
+public class CheatManager implements EventCallback{
 	private Cheat match;
 	private static CheatManager cheatManager;
 	private String curCheat = "";
@@ -24,29 +26,27 @@ public class CheatManager{
 	public CheatManager()
 	{
 		cheatManager=this;
-		this.cheatList.add(new IDKFA());
-		this.cheatList.add(new Konami());
+		cheatList.add(new IDKFA());
+		cheatList.add(new Konami());
+		EventManager.getEventManager().registerHook("KEY_DOWN", this);
 	}
 	
-	public void cheatInputCheck()
+	public void updateHooks()
 	{
-		for(Cheat cheat:cheatList)
+		// Go through every cheat
+		for(Cheat cheat: cheatList)
 		{
-			if(cheat.getKeyCombination().equalsIgnoreCase(curCheat))
-			{
-				Logger.getLogger().log(Logger.getLogger().DEBUG, "Cheat entered: "+cheat.getName());
-				match=cheat;
-				curCheat="";
-				return;
-			}
+			// Check to make sure the lengths are compatable and won't throw and IndexOutOfBounds when used
 			if(curCheat.length()>=cheat.getKeyCombination().length())
 				continue;
-			if(Keyboard.isKeyDown(Keyboard.getKeyIndex(String.valueOf(cheat.getKeyCombination().charAt(this.curCheat.length()))))&&cheat.getKeyCombination().contains(curCheat))
-				this.curCheat = this.curCheat+(String.valueOf(cheat.getKeyCombination().charAt(this.curCheat.length())));
+			// check to see if the cheat matches the current typed character
+			if(cheat.getKeyCombination().toUpperCase().contains(curCheat.toUpperCase()))
+				// Register a new hook with the expected character
+				EventManager.getEventManager().registerHook(Keyboard.getKeyIndex(String.valueOf(cheat.getKeyCombination().charAt(this.curCheat.length())))+"_DOWN", this);
 		}
-		
 	}
 	
+
 	public void processCheat(Scene scene)
 	{
 		if(match!=null)
@@ -70,6 +70,31 @@ public class CheatManager{
 	public void setCheatList(ArrayList<Cheat> cheatList) {
 		this.cheatList = cheatList;
 	}
+
+	@Override
+	public void callback(String eventName) {
+		if(eventName=="KEY_DOWN")
+		{
+			updateHooks();
+		}
+		for(Cheat cheat:cheatList)
+			if(!(curCheat.length()>=cheat.getKeyCombination().length())&&eventName.contains(Keyboard.getKeyIndex(String.valueOf(cheat.getKeyCombination().charAt(this.curCheat.length())))+"_DOWN"))
+				{
+					EventManager.getEventManager().removeHook(Keyboard.getKeyIndex(String.valueOf(cheat.getKeyCombination().charAt(this.curCheat.length())))+"_DOWN", this);
+					curCheat=curCheat+(cheat.getKeyCombination().charAt(curCheat.length()));
+					break;
+				}
+		
+		for(Cheat cheat:cheatList)
+			if(cheat.getKeyCombination().equalsIgnoreCase(curCheat))
+			{
+				Logger.getLogger().log(Logger.getLogger().DEBUG, "Cheat entered: "+cheat.getName());
+				match=cheat;
+				curCheat="";
+				return;
+			}
+	}
+
 	
 
 }

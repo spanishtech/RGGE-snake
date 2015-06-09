@@ -27,19 +27,6 @@ public class About extends Scene
 		});
 	}
 	
-	
-	@Override
-	public void input()
-	{
-		getCheatManager().cheatInputCheck();
-		for(GameObject gameObject:this.getGameObjects())
-		{
-			gameObject.input();
-		}
-		getGui().input();
-
-	}
-	
 	@Override
 	public void render()
 	{

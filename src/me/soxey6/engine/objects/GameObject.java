@@ -127,7 +127,7 @@ public class GameObject extends Wrapper
 	/**
 	 * What's my, what's my, what's my scene. Oh, it's this one.<br>
 	 * https://www.youtube.com/watch?v=ugA5bLqivkY <- Context
-	 * @return the game
+	 * @return the scene
 	 */
 	public Scene getScene()
 	{

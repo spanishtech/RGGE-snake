@@ -1,5 +1,10 @@
 package me.soxey6.engine.managers.input;
 
+/**
+ * A very basic class used for registering clicks and their locations.
+ * PLEASE USE vector2f instead.
+ * @author spanish
+ */
 public class Click {
 	private int x;
 	private int y;

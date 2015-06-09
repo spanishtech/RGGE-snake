@@ -20,6 +20,11 @@ public class SceneManager{
 		sceneManager=this;
 	}
 	
+	/**
+	 * Returns a scene by the name
+	 * @param String name - The name of the Scene
+	 * @return Scene - The scene with the matching name (Null if none.)
+	 */
 	public Scene getScene(String name)
 	{
 		Scene toReturn = null;
@@ -31,13 +36,21 @@ public class SceneManager{
 		return toReturn;
 	}
 	
-	public void switchScene(String name)
+	/**
+	 * Switches a scene by changing focus
+	 * @param String sceneName - The name of the same to change to.
+	 */
+	public void switchScene(String sceneName)
 	{
+		// Set the found boolean to flase
 		boolean found = false;
-		Logger.getLogger().log(Logger.getLogger().DEBUG, "Switching to scene: "+name);
+		Logger.getLogger().log(Logger.getLogger().DEBUG, "Switching to scene: "+sceneName);
+		// Trigger the event
 		EventManager.getEventManager().trigger("SCENE_SWITCH");
+		// Iterate through each scene
 		for(Scene scene : this.getScenes())
 		{
+			// Check if the scene is focused
 			if(scene.isFocused())
 			{
 				Logger.getLogger().log(Logger.getLogger().DEBUG, "Unfocusing: "+scene.getName());
@@ -49,7 +62,7 @@ public class SceneManager{
 				scene.setFocused(false);
 
 			}
-			if((scene.getName()==name))
+			if((scene.getName()==sceneName))
 			{
 				found = true;
 				Logger.getLogger().log(Logger.getLogger().DEBUG, "Focusing: "+scene.getName());
@@ -61,11 +74,20 @@ public class SceneManager{
 				scene.setFocused(true);
 			}
 		}
+		// If the scene is not there
 		if(!found)
-			Logger.getLogger().log(Logger.getLogger().WARNING, "No scene by name: "+name);
+		{
+			// Catch event
+			Logger.getLogger().log(Logger.getLogger().WARNING, "No scene by name: "+sceneName);
 			EventManager.getEventManager().trigger("WARNING_SCENE_NOSCENE");
+		}
+			
 	}
 	
+	/**
+	 * Adds a scene to the array if it has not already been added.
+	 * @param Scene scene - The scene to add
+	 */
 	public void addScene(Scene scene)
 	{
 		Logger.getLogger().log(Logger.getLogger().DEBUG, "Adding scene: "+scene.getName());
@@ -79,8 +101,19 @@ public class SceneManager{
 		}
 		if(!alreadyHere)
 		getScenes().add(scene);
-
 		
+	}
+	
+	public void removeScene(Scene scene)
+	{
+		getScenes().remove(scene);
+	}
+	
+	public void removeScene(String sceneName)
+	{
+		for(int i=0; i<=getScenes().size()-1; i++)
+			if(getScenes().get(i).getName().equalsIgnoreCase(sceneName))
+				getScenes().remove(i);
 	}
 
 	public static SceneManager getSceneManager() {

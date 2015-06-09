@@ -3,7 +3,9 @@ package me.soxey6.engine.managers.input;
 import java.util.ArrayList;
 
 import me.soxey6.engine.managers.event.EventManager;
+import me.soxey6.utils.Logger;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -47,6 +49,11 @@ public class InputManager {
 	
 	public InputManager()
 	{
+		mouseCurClick = new Click(0,0);
+		mouseCurPos = new Vector2f(0,0);
+		keysNewDown= new ArrayList<Integer>();
+		keysCurDown= new ArrayList<Integer>();
+		keysOldDown= new ArrayList<Integer>();
 		inputManager=this;
 	}
 	
@@ -60,8 +67,31 @@ public class InputManager {
 	}
 
 	private void updateKeys() {
-		// TODO Auto-generated method stub
-		
+		for(int i=1; i<=223; i++)
+		{
+			if(keysOldDown.contains(i))
+			{
+				keysOldDown.remove(keysOldDown.indexOf(i));
+			}
+			else if(keysNewDown.contains(i))
+			{
+				keysNewDown.remove(keysNewDown.indexOf(i));
+			}
+			else if(Keyboard.isKeyDown(i)&&(!keysCurDown.contains(i)&&!keysNewDown.contains(i)))
+			{
+				EventManager.getEventManager().trigger("KEY_DOWN");
+				EventManager.getEventManager().trigger(i+"_DOWN");
+				keysNewDown.add(i);
+				keysCurDown.add(i);
+			}else if(!Keyboard.isKeyDown(i)&&keysCurDown.contains(i))
+			{
+				EventManager.getEventManager().trigger("KEY_UP");
+				EventManager.getEventManager().trigger(i+"_UP");
+				keysCurDown.remove(keysCurDown.indexOf(i));
+				keysOldDown.add(i);
+			}
+				
+		}
 	}
 	
 	private void updateMouse() {
@@ -70,9 +100,9 @@ public class InputManager {
 			mouseOldPos=mouseCurPos;
 		
 		// Check to see if the mouse has moved and if so, update mouseCurPos and trigger mouse move event.
-		if(Mouse.getX()!=mouseCurPos.getX()||Mouse.getY()!=mouseCurPos.getY())
+		if(Mouse.getX()!=mouseCurPos.getX()||600-Mouse.getY()!=600-mouseCurPos.getY())
 		{
-			mouseCurPos=new Vector2f(mouseCurPos.getX(),mouseCurPos.getY());
+			mouseCurPos=new Vector2f(Mouse.getX(),600-Mouse.getY());
 			EventManager.getEventManager().trigger("MOUSE_MOVE");
 		}
 		
@@ -80,8 +110,9 @@ public class InputManager {
 		if(Mouse.isButtonDown(0)&&mouseCurClick==null)
 		{
 			// Register new click.
-			mouseCurClick = new Click(Mouse.getX(), Mouse.getX());
+			mouseCurClick = new Click(Mouse.getX(), 600-Mouse.getY());
 			EventManager.getEventManager().trigger("MOUSE_CLICK");
+			Logger.getLogger().log(0, "MOUSE_CLICK");
 		}else if(!Mouse.isButtonDown(0)&&mouseCurClick!=null)
 		{
 			// Register the release

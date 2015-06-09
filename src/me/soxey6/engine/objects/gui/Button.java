@@ -1,8 +1,5 @@
 package me.soxey6.engine.objects.gui;
 
-import me.soxey6.engine.managers.input.Click;
-
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 
 /**
@@ -11,7 +8,6 @@ import org.newdawn.slick.Color;
  */
 public class Button extends GuiElement{
 	private String buttonText;
-	private Click click;
 	private boolean hover;
 	private Color textColor;
 	private Color buttonColor;
@@ -36,23 +32,6 @@ public class Button extends GuiElement{
 	@Override
 	public void input()
 	{
-		if(!Mouse.isButtonDown(0)&&getGui().isOldInput())
-			getGui().setOldInput(false);
-		// TODO: Replace "getGui().getScene().getGame().getWindow().getSy()" with a constant.
-		// Check if they're clicking within the button keeping in mind that Slick renders text upside-down so we need to flip all Y Calculations
-		if(Mouse.getX()>=getPosX()&&Mouse.getX()<=getPosX()+getSizeX()&& getGame().getWindow().getSy()-Mouse.getY()>=getPosY()&&getGame().getWindow().getSy()-Mouse.getY()<=getPosY()+getSizeY())
-		{
-			this.hover=true;
-			onHover(Mouse.getX(), Mouse.getY());
-			if(Mouse.isButtonDown(0)&&!getGui().isOldInput())
-			{
-				getGui().setOldInput(true);
-				// register the click
-				click = new Click(Mouse.getX(), Mouse.getY());
-			}
-			
-		}else
-			hover=false;
 	}
 
 	/**
@@ -63,11 +42,6 @@ public class Button extends GuiElement{
 	@Override
 	public void logic()
 	{
-		if(click!=null)
-		{
-			onClick(click.getX(), click.getY());
-			click=null;
-		}
 	}
 	
 	@Override
@@ -76,27 +50,6 @@ public class Button extends GuiElement{
 		
 		getRenderingUtils().drawQuad((int)getPosX(), (int)getPosY(), (int)getPosX()+(int)getSizeX(), (int)getPosY()+(int)getSizeY(), getButtonColor());
 		getRenderingUtils().drawStringCentered((int)getPosX()+(int)(getSizeX()/2), (int)getPosY()+(int)(getSizeY()/2), getButtonText(),24, getTextColor());
-	}
-	
-	/**
-	 * Triggered when the mouse clicks within the button
-	 * @param mousePosX
-	 * @param mousePosY
-	 * To be overridden only
-	 */
-	public void onClick(int mousePosX, int mousePosY)
-	{
-		
-	}
-	
-	/**
-	 * Triggered when the mouse hovers within the button
-	 * @param mousePosX
-	 * @param mousePosY
-	 * To be overridden only
-	 */
-	public void onHover(int x, int y)
-	{		
 	}
 
 	public String getButtonText() {

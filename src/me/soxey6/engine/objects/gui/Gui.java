@@ -9,12 +9,10 @@ import me.soxey6.engine.objects.Scene;
  *
  */
 public class Gui {
-	private boolean oldInput;
 	
 	public Gui(Scene scene)
 	{
 		this.scene=scene;
-		this.oldInput=true;
 	}
 	
 	private Scene scene;
@@ -77,20 +75,5 @@ public class Gui {
 		this.scene = scene;
 	}
 
-	/**
-	 * @return the oldInput
-	 */
-	public boolean isOldInput()
-	{
-		return oldInput;
-	}
-
-	/**
-	 * @param oldInput the oldInput to set
-	 */
-	public void setOldInput(boolean oldInput)
-	{
-		this.oldInput = oldInput;
-	}
 
 }
