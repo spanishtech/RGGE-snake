@@ -1,0 +1,16 @@
+me.soxey6.engine.main
+me.soxey6.engine.managers
+me.soxey6.engine.managers.cheat
+me.soxey6.engine.managers.cheat.cheats
+me.soxey6.engine.managers.event
+me.soxey6.engine.managers.file
+me.soxey6.engine.managers.input
+me.soxey6.engine.managers.sound
+me.soxey6.engine.managers.time
+me.soxey6.engine.objects
+me.soxey6.engine.objects.gui
+me.soxey6.engine.render
+me.soxey6.engine.render.animation
+me.soxey6.game.objects
+me.soxey6.game.scenes
+me.soxey6.utils
