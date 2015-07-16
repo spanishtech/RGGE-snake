@@ -13,10 +13,12 @@ public class Cheat extends Wrapper{
 		getEventManager().trigger("CHEAT_CREATED");
 		getEventManager().trigger(getName().toUpperCase()+"_CREATED");
 	}
-	
-	/**
+	/*
 	 * I'm a pansexual gender fluid non-binary mocha frappuccino with dual acting hydraulic cylinder and leather grip Swiss army knife
 	 * #Triggered
+	 */
+	/**
+	 * runs when the cheat is trggered
 	 * Override only pls
 	 * @param Scene scene - The scene in which it was triggered
 	 */

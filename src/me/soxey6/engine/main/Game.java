@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import me.soxey6.engine.managers.SceneManager;
 import me.soxey6.engine.managers.cheat.CheatManager;
 import me.soxey6.engine.managers.event.EventManager;
+import me.soxey6.engine.managers.file.FileManager;
 import me.soxey6.engine.managers.input.InputManager;
+import me.soxey6.engine.managers.sound.SoundManager;
 import me.soxey6.engine.managers.time.Timer;
 import me.soxey6.engine.objects.GameObject;
 import me.soxey6.engine.objects.Setting;
 import me.soxey6.engine.render.Window;
 import me.soxey6.game.scenes.MainMenuScene;
 import me.soxey6.utils.ErrorHandler;
-import me.soxey6.utils.FileHandler;
 import me.soxey6.utils.Logger;
 import me.soxey6.utils.RenderingUtils;
 
@@ -36,8 +37,9 @@ public class Game
 	private EventManager eventManager;
 	private ErrorHandler errorHandler;
 	private SceneManager sceneManager;
-	private FileHandler fileHandler;
+	private FileManager fileHandler;
 	private CheatManager cheatManager;
+	private SoundManager soundManager;
 	private Timer timer;
 	private Logger logger;
 	private RenderingUtils renderingUtils;
@@ -65,7 +67,7 @@ public class Game
 		getLogger().log(getLogger().INFO, "Respawned");
 		
 		getLogger().log(getLogger().DEBUG, "Creating file manager instance");
-		this.fileHandler = new FileHandler();
+		this.fileHandler = new FileManager();
 		
 		getLogger().log(getLogger().DEBUG, "Creating Scene manager instance");
 		this.sceneManager=new SceneManager();
@@ -78,6 +80,9 @@ public class Game
 		
 		getLogger().log(getLogger().DEBUG, "Creating Input Manager Instance");
 		this.inputManager = new InputManager();
+		
+		getLogger().log(getLogger().DEBUG, "Creating Sound Manager Instance");
+		this.soundManager = new SoundManager();
 		
 		getLogger().log(getLogger().DEBUG, "Creating Timer Instance");
 		this.timer = new Timer();
@@ -96,7 +101,7 @@ public class Game
 		
 		// Engine splash
 		if(SHOW_SPLASH)
-			// Magikarp
+			// Magikarp use
 			splash();
 		
 		//Creates the objects to be used in the game.
@@ -114,12 +119,12 @@ public class Game
 
 	/**
 	 * Cleans up by <b>destroying</b> the window and OpenGL setup
-	 * @return Void
-	 * @param None
 	 */
 	private void cleanUp()
 	{
-		
+		// Destroy sound engine
+		getLogger().log(getLogger().INFO, "Cleaning up");;
+		getSoundManager().destroy();
 		getWindow().destroy();
 	}
 
@@ -130,6 +135,10 @@ public class Game
 	 */
 	private int gameLoop()
 	{
+		long startTime = System.currentTimeMillis();
+		long totalTicks = 0;
+		
+		float one = 1;
 		// Loops while the window has not attempted to be requested.
 		while(!getWindow().getDisplay().isCloseRequested())
 		{
@@ -144,7 +153,13 @@ public class Game
 			
 			// This renders and/or changes the current frame.
 			if((this.errorHandler.lastError=render())!=0) break;
-			
+			totalTicks++;
+			if(System.currentTimeMillis()>=startTime+1000)
+			{
+				getLogger().log(1, "TPS: "+totalTicks+". Average tick length: "+one/totalTicks+"s");
+				totalTicks=0;
+				startTime=System.currentTimeMillis();
+			}
 		}
 		// This then checks the last error and checks to see if its critical and cannot continue.
 		if(this.errorHandler.checkCritError(this.errorHandler.lastError))
@@ -244,21 +259,8 @@ public class Game
 	 */
 	public int logic()
 	{
+		// Simple ey?
 		getTimer().tick();
-		// Check to see if the logic needs to be limited and if so do so.
-		/*if(!GLOBAL_LIMIT_LOGIC||System.currentTimeMillis()>=lastLogicTime+GLOBAL_LOGIC_INCREMENT_MS){
-			for(int i = 0; i<=getSceneManager().getScenes().size()-1; i++)
-			{
-				if(getSceneManager().getScenes().get(i).isFocused()&&(!getSceneManager().getScenes().get(i).isLimitLogic()||System.currentTimeMillis()>=getSceneManager().getScenes().get(i).getLastLogicTime()+getSceneManager().getScenes().get(i).getLogicIncrementMS())){
-					getSceneManager().getScenes().get(i).logic();
-					getSceneManager().getScenes().get(i).setLastLogicTime(System.currentTimeMillis());
-				}
-				
-			}
-			//TODO: logic
-			lastLogicTime=System.currentTimeMillis();
-			return 0;
-		}*/
 		return 0;
 		
 	}
@@ -289,19 +291,35 @@ public class Game
 		//TODO: render
 		return 0;
 	}
-
+	
+	/**
+	 * Returns the name of the game.
+	 * @return the name of the game
+	 */
 	public String getGameName() {
 		return gameName;
 	}
 
+	/**
+	 * Sets the name of the game.
+	 * @param gameName the name of the game
+	 */
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
 	}
 
+	/**
+	 * Returns the window of the game.
+	 * @return the window of the game
+	 */
 	public Window getWindow() {
 		return window;
 	}
 
+	/**
+	 * Sets the window of the game.
+	 * @param window the window of the game
+	 */
 	public void setWindow(Window window) {
 		this.window = window;
 	}
@@ -330,11 +348,11 @@ public class Game
 		this.sceneManager = sceneManager;
 	}
 
-	public FileHandler getFileHandler() {
+	public FileManager getFileHandler() {
 		return fileHandler;
 	}
 
-	public void setFileHandler(FileHandler fileHandler) {
+	public void setFileHandler(FileManager fileHandler) {
 		this.fileHandler = fileHandler;
 	}
 
@@ -344,6 +362,22 @@ public class Game
 
 	public void setCheatManager(CheatManager cheatManager) {
 		this.cheatManager = cheatManager;
+	}
+
+	/**
+	 * @return soundManager
+	 */
+	public SoundManager getSoundManager()
+	{
+		return soundManager;
+	}
+
+	/**
+	 * @param soundManager the soundManager to set
+	 */
+	public void setSoundManager(SoundManager soundManager)
+	{
+		this.soundManager = soundManager;
 	}
 
 	/**

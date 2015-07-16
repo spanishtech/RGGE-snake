@@ -8,6 +8,12 @@ import me.soxey6.engine.objects.gui.Label;
 
 import org.newdawn.slick.Color;
 
+/**
+ * A scene that displays the main menu items which allows easy navigation between scenes
+ * 
+ * @author pchilds
+ *
+ */
 public class MainMenuScene extends Scene implements EventCallback
 {
 
@@ -15,40 +21,49 @@ public class MainMenuScene extends Scene implements EventCallback
 	{
 		super("Main Menu");
 		getEventManager().registerHook(getName().toUpperCase()+"_FOCUS_CHANGE",this);
-		getGui().getGuiElements().add(new Button("button_play", "Play", this.getGui(),Color.black, new Color(0, 255, 0), 350, 275, 100, 50){
+		new Button("button_play", "Play", this.getGui(),Color.black, new Color(0, 255, 0), 350, 250, 100, 50){
 			@Override
 			public void onClick(int posX, int posY)
 			{
 				new MainGameScene("Game");
 				getSceneManager().switchScene("Game");
 			}
-		});
-		getGui().getGuiElements().add(new Button("button_options", "Options", this.getGui(),Color.black, new Color(0, 255, 0), 350, 330, 100, 50){
+		};
+		new Button("button_options", "Options", this.getGui(),Color.black, new Color(0, 255, 0), 350, 305, 100, 50){
 			@Override
 			public void onClick(int posX, int posY)
 			{
 				new Options();
 				getSceneManager().switchScene("Options");
 			}
-		});
-		getGui().getGuiElements().add(new Button("button_about", "About", this.getGui(),Color.black, new Color(0, 255, 0), 350, 385, 100, 50){
+		};
+
+		new Button("button_help", "Help", this.getGui(),Color.black, new Color(0, 255, 0), 350, 360, 100, 50){
+			@Override
+			public void onClick(int posX, int posY)
+			{
+				new Help();
+				getSceneManager().switchScene("Help");
+			}
+		};
+		new Button("button_about", "About", this.getGui(),Color.black, new Color(0, 255, 0), 350, 415, 100, 50){
 			@Override
 			public void onClick(int posX, int posY)
 			{
 				new About();
 				getSceneManager().switchScene("About");
 			}
-		});
-		getGui().getGuiElements().add(new Button("button_quit", "Quit", this.getGui(),Color.black, new Color(0, 255, 0), 350, 440, 100, 50){
+		};
+		new Button("button_quit", "Quit", this.getGui(),Color.black, new Color(0, 255, 0), 350, 470, 100, 50){
 			@Override
 			public void onClick(int posX, int posY)
 			{
 				// Fuck it, I quit xD
 				System.exit(0);
 			}
-		});
-		getGui().getGuiElements().add(new Label("label_title_snakeSnake", this.getGui(), 400, 100, "Snake, SNAKE,", 42, Color.white));
-		getGui().getGuiElements().add(new Label("label_title_snaaakkkeee", this.getGui(), 400, 150, "SNAAAKKKKEEE", 60, Color.white));
+		};
+		new Label("label_title_snakeSnake", this.getGui(), 400, 100, "Snake, SNAKE,", 42, Color.white);
+		new Label("label_title_snaaakkkeee", this.getGui(), 400, 150, "SNAAAKKKKEEE", 60, Color.white);
 	}
 	
 	@Override

@@ -31,6 +31,9 @@ public class CheatManager implements EventCallback{
 		EventManager.getEventManager().registerHook("KEY_DOWN", this);
 	}
 	
+	/**
+	 * Updates the hooks that is required to log the keys for each cheat.
+	 */
 	public void updateHooks()
 	{
 		// Go through every cheat
@@ -46,7 +49,10 @@ public class CheatManager implements EventCallback{
 		}
 	}
 	
-
+	/**
+	 * Processes the cheat
+	 * @param scene The scene to send the information to
+	 */
 	public void processCheat(Scene scene)
 	{
 		if(match!=null)
@@ -72,6 +78,9 @@ public class CheatManager implements EventCallback{
 	}
 
 	@Override
+	/**
+	 * The callback for events
+	 */
 	public void callback(String eventName) {
 		if(eventName=="KEY_DOWN")
 		{

@@ -2,6 +2,7 @@ package me.soxey6.engine.managers.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * This class is used for dispatching, hooking and managing events.
@@ -21,24 +22,25 @@ public class EventManager {
 
 	/**
 	 * Used for triggering certain events and all classes hooked with it.
-	 * @param String eventName - The name of the event to trigger.
+	 * @param eventName - The name of the event to trigger.
 	 */
 	public void trigger(String eventName)
 	{
 		eventName=eventName.toUpperCase();
-		if(hooks.containsKey(eventName))
+		if(hooks.containsKey(eventName)&&!hooks.get(eventName).isEmpty())
 		{
 			for(int i =0; i<=hooks.get(eventName).size()-1; i++)
 			{
-				hooks.get(eventName).get(i).callback(eventName);
+				if(hooks.get(eventName).get(i)!=null)
+					hooks.get(eventName).get(i).callback(eventName);
 			}
 		}
 	}
 	
 	/**
 	 * Used for registering hooks
-	 * @param String evenName - The name of the event to hook
-	 * @param EventCallback callbackLocation - The interface to callback to.
+	 * @param evenName - The name of the event to hook
+	 * @param callbackLocation - The interface to callback to.
 	 */
 	public void registerHook(String eventName, EventCallback callbackLocation)
 	{
@@ -52,6 +54,11 @@ public class EventManager {
 			hooks.get(eventName).add(callbackLocation);
 	}
 	
+	/**
+	 * Removes the hooks from an eventName and callbackLocation
+	 * @param eventName The name of the event
+	 * @param callbackLocation The location to callback
+	 */
 	public void removeHook(String eventName, EventCallback callbackLocation)
 	{
 		eventName=eventName.toUpperCase();
@@ -64,5 +71,26 @@ public class EventManager {
 	}
 	public static void setEventManager(EventManager eventManager) {
 		EventManager.eventManager = eventManager;
+	}
+	
+	/**
+	 * Removes all hooks associated with this callbackLocation
+	 * @param callback The callbackLocation
+	 */
+	public void removeHooks(EventCallback callback)
+	{
+		Set<String> keyset = hooks.keySet();
+		ArrayList<String> toRemove = new ArrayList<String>();
+	    for(String s : keyset)
+	    	if(!hooks.get(s).isEmpty())
+		        for(int i =0; i<=hooks.get(s).size()-1; i++)
+				{
+						hooks.get(s).remove(callback);
+				}
+	    	else
+	    		toRemove.add(s);
+	    for(String s : toRemove)
+	    	hooks.remove(s);
+	    	
 	}
 }

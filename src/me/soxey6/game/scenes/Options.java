@@ -7,14 +7,19 @@ import me.soxey6.engine.objects.Scene;
 import me.soxey6.engine.objects.gui.Button;
 import me.soxey6.engine.objects.gui.Label;
 
+/**
+ * This displays the vital option of the frame limit. Without it you may experience very slight tearing.
+ * @author pchilds
+ *
+ */
 public class Options extends Scene
 {
 
 	public Options()
 	{
 		super("Options");
-		getGui().getGuiElements().add(new Label("label_title", getGui(), 400, 100, "Options", 42, Color.white));
-		getGui().getGuiElements().add(new Button("button_frame_limit", "Frame Limit: Off", this.getGui(),Color.black, new Color(0, 255, 0), 300, 275, 200, 50){
+		new Label("label_title", getGui(), 400, 100, "Options", 42, Color.white);
+		new Button("button_frame_limit", "Frame Limit: Off", this.getGui(),Color.black, new Color(0, 255, 0), 300, 275, 200, 50){
 			@Override
 			public void onClick(int posX, int posY)
 			{
@@ -41,14 +46,14 @@ public class Options extends Scene
 				
 					
 			}
-		});
-		getGui().getGuiElements().add(new Button("button_back", "Back", this.getGui(),Color.black, new Color(0, 255, 0), 350, 440, 100, 50){
+		};
+		new Button("button_back", "Back", this.getGui(),Color.black, new Color(0, 255, 0), 350, 440, 100, 50){
 			@Override
 			public void onClick(int posX, int posY)
 			{
 				getSceneManager().switchScene("Main Menu");
 			}
-		});
+		};
 	}
 	
 	@Override

@@ -17,17 +17,17 @@ public class GameObject extends Wrapper
 	private float sizeX;
 	private float sizeY;
 	private Scene scene;
-	public int direction = 0;
+	private boolean focused;
 	
 	/**
 	 * The basic game object, used to create any object rendered in the game
-	 * @param name
-	 * @param scene
-	 * @param colour
-	 * @param posX
-	 * @param posY
-	 * @param sizeX
-	 * @param sizeY
+	 * @param name the name of the object
+	 * @param scene The parent scene of the object
+	 * @param colour The colour of the object being drawn
+	 * @param posX The position x of the game object
+	 * @param posY The position y of the game object
+	 * @param sizeX The size x of the game object
+	 * @param sizeY The size y of the game object
 	 */
 	public GameObject(String name, Scene scene,Color colour, float posX, float posY, float sizeX, float sizeY)
 	{
@@ -39,7 +39,6 @@ public class GameObject extends Wrapper
 		this.sizeY=sizeY;
 		this.scene=scene;
 		this.scene.getGameObjects().add(this);
-		this.getLogger().log(this.getLogger().DEBUG, "Created game object: "+name+"\nIn scene: "+this.getScene().getName()+"\n At coords: "+this.getPosX()+", "+this.getPosY() );
 		getEventManager().trigger("GAMEOBJECT_CREATED");
 		getEventManager().trigger(getName().toUpperCase()+"_CREATED");
 	}
@@ -190,4 +189,26 @@ public class GameObject extends Wrapper
 		this.scene = scene;
 	}
 	
+	/**
+	 * @return the focused
+	 */
+	public boolean isFocused()
+	{
+		return focused;
+	}
+
+	/**
+	 * @param focused the focused to set
+	 */
+	public void setFocused(boolean focused)
+	{
+		this.focused = focused;
+	}
+
+	public void finalize() throws Throwable
+	{
+		getLogger().log(getLogger().DEBUG, getName()+": Destroyed");
+		getScene().getGameObjects().remove(this);
+		super.finalize();
+	}
 }

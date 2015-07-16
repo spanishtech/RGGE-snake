@@ -4,6 +4,7 @@ import me.soxey6.engine.managers.SceneManager;
 import me.soxey6.engine.managers.cheat.CheatManager;
 import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.engine.managers.input.InputManager;
+import me.soxey6.engine.managers.sound.SoundManager;
 import me.soxey6.engine.managers.time.Timer;
 import me.soxey6.utils.ErrorHandler;
 import me.soxey6.utils.Logger;
@@ -21,8 +22,10 @@ public class Wrapper{
 	private SceneManager sceneManager;
 	private CheatManager cheatManager;
 	private InputManager inputManager;
+	private SoundManager soundManager;
 	private ErrorHandler errorHandler;
 	private RenderingUtils renderingUtils;
+
 	private Timer timer;
 	private Logger logger;
 	private Settings settings;
@@ -36,6 +39,7 @@ public class Wrapper{
 		this.cheatManager = CheatManager.getCheatManager();
 		this.errorHandler = ErrorHandler.getErrorHandler();
 		this.inputManager = InputManager.getInputManager();
+		this.soundManager = SoundManager.getSoundManager();
 		this.renderingUtils = RenderingUtils.getRenderingUtils();
 		this.timer = Timer.getTimer();
 		this.logger = Logger.getLogger();
@@ -77,6 +81,14 @@ public class Wrapper{
 		this.inputManager = inputManager;
 	}
 
+	public SoundManager getSoundManager() {
+		return soundManager;
+	}
+
+
+	public void setSoundManager(SoundManager soundManager) {
+		this.soundManager = soundManager;
+	}
 
 	public ErrorHandler getErrorHandler() {
 		return errorHandler;

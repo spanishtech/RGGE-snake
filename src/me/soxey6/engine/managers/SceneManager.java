@@ -22,8 +22,9 @@ public class SceneManager{
 	
 	/**
 	 * Returns a scene by the name
-	 * @param String name - The name of the Scene
-	 * @return Scene - The scene with the matching name (Null if none.)
+	 * @param name - The name of the Scene
+	 * @return Scene - The scene with the matching name (Null if none)
+	 * NOTE: Since null can be returned always check
 	 */
 	public Scene getScene(String name)
 	{
@@ -38,7 +39,8 @@ public class SceneManager{
 	
 	/**
 	 * Switches a scene by changing focus
-	 * @param String sceneName - The name of the same to change to.
+	 * 
+	 * @param sceneName - The name of the same to change to.
 	 */
 	public void switchScene(String sceneName)
 	{
@@ -86,7 +88,8 @@ public class SceneManager{
 	
 	/**
 	 * Adds a scene to the array if it has not already been added.
-	 * @param Scene scene - The scene to add
+	 * 
+	 * @param scene - The scene to add
 	 */
 	public void addScene(Scene scene)
 	{
@@ -104,11 +107,21 @@ public class SceneManager{
 		
 	}
 	
+	/**
+	 * Removes a scene from the sceneList
+	 * 
+	 * @param scene The scene to remove
+	 */
 	public void removeScene(Scene scene)
 	{
 		getScenes().remove(scene);
 	}
 	
+	/**
+	 * Removes a scene from the sceneList by the name
+	 * 
+	 * @param sceneName The name of the scene to remove
+	 */
 	public void removeScene(String sceneName)
 	{
 		for(int i=0; i<=getScenes().size()-1; i++)

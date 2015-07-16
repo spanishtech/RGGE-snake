@@ -18,6 +18,9 @@ public class Gui {
 	private Scene scene;
 	private ArrayList<GuiElement> guiElements = new ArrayList<GuiElement>();
 
+	/**
+	 * Iterates through every guiElement and triggers the input function
+	 */
 	public void input()
 	{
 		for(GuiElement guiElement: guiElements)
@@ -26,6 +29,9 @@ public class Gui {
 		}
 	}
 	
+	/**
+	 * Iterates through every guiElement and triggers the logic function
+	 */
 	public void logic()
 	{
 		for(GuiElement guiElement: guiElements)
@@ -34,6 +40,9 @@ public class Gui {
 		}
 	}
 	
+	/**
+	 * Iterates through every guiElement and triggers the render function
+	 */
 	public void render()
 	{
 		for(GuiElement guiElement: guiElements)

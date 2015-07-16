@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import me.soxey6.engine.main.Game;
 import me.soxey6.engine.main.Wrapper;
+import me.soxey6.engine.managers.event.EventCallback;
 import me.soxey6.engine.objects.gui.Gui;
 @SuppressWarnings("static-access")
 /**
@@ -53,6 +54,21 @@ public class Scene extends Wrapper{
 	{
 		getEventManager().trigger(getName().toUpperCase()+"_FOCUS_CHANGE");
 		if(focused)
+		{
+			game.getWindow().getDisplay().setTitle(this.game.getGameName()+" - "+this.title);
+			if(this instanceof EventCallback)
+			{
+				this.focused=true;
+				for(GameObject gO:getGameObjects())
+						gO.setFocused(true);
+			}
+		}else
+			if(this instanceof EventCallback)
+			{
+				this.focused=false;
+				for(GameObject gO:getGameObjects())
+						gO.setFocused(false);
+			}
 		// Set window title
 		game.getWindow().getDisplay().setTitle(this.game.getGameName()+" - "+this.title);
 	}
@@ -62,10 +78,15 @@ public class Scene extends Wrapper{
 	 */
 	public void input()
 	{
+		
 		if(focused)
+		{
+			getGui().input();
+			for(GameObject gO : getGameObjects())
+				gO.input();
 			return;
-		else
-			return;
+		}
+			
 	}
 	
 	/**
@@ -74,9 +95,12 @@ public class Scene extends Wrapper{
 	public void logic()
 	{
 		if(focused)
+		{
+			getGui().logic();
+			for(GameObject gO : getGameObjects())
+				gO.logic();
 			return;
-		else
-			return;	
+		}
 	}
 	
 	/**
@@ -85,9 +109,12 @@ public class Scene extends Wrapper{
 	public void render()
 	{
 		if(focused)
+		{
+			getGui().render();
+			for(GameObject gO : getGameObjects())
+				gO.render();
 			return;
-		else
-			return;
+		}
 	}
 
 	public String getName() {
@@ -154,7 +181,29 @@ public class Scene extends Wrapper{
 	public long getLogicIncrementMS() {
 		return LOGIC_INCREMENT_MS;
 	}
-
+	
+	public void finalize() throws Throwable
+	{
+		for(int i = 0; i<=getGameObjects().size()-1;i++)
+		{
+			getGameObjects().get(i).finalize();
+			getGameObjects().remove(i);
+		}
+			
+		getSceneManager().getScenes().remove(this);
+		super.finalize();
+	}
+	
+	public void finalize(EventCallback callback) throws Throwable
+	{
+		while(!getGameObjects().isEmpty())
+		{
+			getGameObjects().remove(0);
+		}
+		getSceneManager().getScenes().remove(this);
+		getEventManager().removeHooks(callback);
+		super.finalize();
+	}
 }
 
 	

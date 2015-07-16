@@ -16,6 +16,9 @@ public class Timer
 		this.times = new ArrayList<Time>();
 	}
 	
+	/**
+	 * This function checks to see if any times can be triggered
+	 */
 	public void tick()
 	{
 		// Iterate through every time
@@ -31,6 +34,12 @@ public class Timer
 		}
 	}
 	
+	/**
+	 * Adds a new timer to the timer array AND registers a new hook
+	 * 
+	 * @param time The time to use
+	 * @param callback The interface to callback to
+	 */
 	public void newTimer(Time time, EventCallback callback)
 	{
 		// Create a new timer and register the event

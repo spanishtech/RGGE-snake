@@ -23,8 +23,8 @@ public class Settings{
 	
 	/**
 	 * Add a setting to the hashmap for easy retrieval 
-	 * @param String name - The name that the setting will be retrieved with
-	 * @param Setting setting - The setting to store
+	 * @param name - The name that the setting will be retrieved with
+	 * @param setting - The setting to store
 	 */
 	public void addSetting(String name,Setting setting)
 	{
@@ -34,7 +34,7 @@ public class Settings{
 	
 	/**
 	 * Add a setting to the hashmap for easy retrieval 
-	 * @param Setting setting - The setting to store
+	 * @param setting - The setting to store
 	 */
 	public void addSetting(Setting setting)
 	{
@@ -44,7 +44,7 @@ public class Settings{
 	
 	/**
 	 * Retrieves a setting by name
-	 * @param String name - The name that the setting will be retrieved
+	 * @param name - The name that the setting will be retrieved
 	 */
 	public Setting getSetting(String name)
 	{
@@ -53,8 +53,8 @@ public class Settings{
 	
 	/**
 	 * Change a settings value with a string
-	 * @param String name - The name of the setting to update
-	 * @param String value - The value to update the setting with
+	 * @param name - The name of the setting to update
+	 * @param value - The value to update the setting with
 	 */
 	public void updateSetting(String name, String value)
 	{
@@ -66,8 +66,8 @@ public class Settings{
 	
 	/**
 	 * Change a settings value with a string
-	 * @param String name - The name of the setting to update
-	 * @param int value - The value to update the setting with
+	 * @param name - The name of the setting to update
+	 * @param value - The value to update the setting with
 	 */
 	public void updateSetting(String name, int value)
 	{

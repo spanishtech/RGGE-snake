@@ -1,5 +1,6 @@
 package me.soxey6.engine.main;
 
+
 /**
  * The entry point of the game that then sets up the game object making almost everything non-static.
  * @author Pat Childs || Soxey6

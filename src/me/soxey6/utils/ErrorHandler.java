@@ -1,13 +1,14 @@
 package me.soxey6.utils;
 import java.util.ArrayList;
 /**
+ * @deprecated
  * The class contains functions for checking errors and a list of error codes.
  * Description of values
- * (+/-)X(Y)YY
+ * (+/-)X(X/Y)YY
  * Where: + is a recoverable error and - is an unrecoverable
  * The X is the catagory
  * Three y is a Warning two are errors
- * Y define the specific error/warning.
+ * Ys define the specific error/warning.
  * @author Soxey6
  */
 public class ErrorHandler{
@@ -67,11 +68,16 @@ public class ErrorHandler{
 	 */
 	public final int LIBS_UNKWN = 600;
 	
+	public final int FILE_UNKWN = 700;
+	
+	public final int FILE_NOTFOUND = 701;
+	public final int FILE_NOPERMS = 702;
+	
 	/**
 	 * An unknown error
-	 * Value is 999
+	 * Value is 9999
 	 */
-	public final int UNKWN_UNKWN = 999;
+	public final int UNKWN_UNKWN = 9999;
 	
 	public static ErrorHandler getErrorHandler() {
 		return errorHandler;

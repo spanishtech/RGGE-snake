@@ -5,7 +5,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 @SuppressWarnings("static-access")
 /**
- * Wrapper for OpenGL display
+ * Wrapper for OpenGL display window
+ * Used for creating, managing and getting information about windows
  */
 public class Window
 {
@@ -13,6 +14,13 @@ public class Window
 	private int sx;
 	private int sy;
 	private Display display;
+	
+	/**
+	 * Takes in a name, and the size in x and y and creates a window based on that information
+	 * @param s The name of the window
+	 * @param sx The size x
+	 * @param sy The size y
+	 */
 	public Window(String s ,int sx, int sy)
 	{
 		this.name = s;
@@ -27,12 +35,17 @@ public class Window
 		}
 	}
 	
-	
+	/**
+	 * Updates the display to a new frame
+	 */
 	public void update()
 	{
 		display.update();
 	}
 	
+	/**
+	 * Removes the window
+	 */
 	public void destroy()
 	{
 		display.destroy();

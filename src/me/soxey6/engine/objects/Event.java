@@ -1,7 +1,9 @@
 package me.soxey6.engine.objects;
 
 import java.util.ArrayList;
-
+/**
+ * @deprecated
+ */
 public class Event
 {
 	private String name;

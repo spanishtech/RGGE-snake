@@ -6,5 +6,6 @@ package me.soxey6.engine.managers.event;
  */
 public interface EventCallback
 {
+	boolean focused=false;
 	void callback(String eventName);
 }

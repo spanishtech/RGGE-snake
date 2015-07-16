@@ -21,12 +21,12 @@ public class GuiElement extends Wrapper implements EventCallback
 	private Click clickLocation;
 	/**
 	 * The basic GuiElement class used for creating any UI element
-	 * @param name
-	 * @param gui 
-	 * @param posX
-	 * @param posY
-	 * @param sizeX
-	 * @param sizeY
+	 * @param name the name of the GuiElement
+	 * @param gui the parent Gui of the element
+	 * @param posX The position x of the game object
+	 * @param posY The position y of the game object
+	 * @param sizeX The size x of the game object
+	 * @param sizeY The size y of the game object
 	 */
 	public GuiElement(String name, Gui gui, float posX, float posY, float sizeX, float sizeY)
 	{
@@ -40,7 +40,6 @@ public class GuiElement extends Wrapper implements EventCallback
 		this.clicked=false;
 		
 		getGui().getGuiElements().add(this);
-		this.getLogger().log(this.getLogger().DEBUG, "Created GUI Element: "+name+"\nIn scene: "+this.getGui().getScene().getName()+"\n At coords: "+this.getPosX()+", "+this.getPosY());
 		getEventManager().trigger("GUIELEMENT_CREATED");
 		getEventManager().trigger(getName().toUpperCase()+"_CREATED");
 		
@@ -49,7 +48,13 @@ public class GuiElement extends Wrapper implements EventCallback
 		getEventManager().registerHook("MOUSE_RELEASE", this);
 
 	}
-
+	
+	/**
+	 * Performs the following logic:
+	 * 	Checks to see if the mouse is hovering
+	 * 	Checks to see if someone has clicked the GuiElement
+	 * 	Checks to see if someone has released a click that started on the button
+	 */
 	@Override
 	public void callback(String eventName)
 	{
@@ -93,7 +98,7 @@ public class GuiElement extends Wrapper implements EventCallback
 	}
 	
 	/**
-	 * Override only pls
+	 * The function that is triggered when something needs to be rendered
 	 */
 	public void render()
 	{
@@ -110,8 +115,8 @@ public class GuiElement extends Wrapper implements EventCallback
 	
 	/**
 	 * Triggered when the mouse clicks within the button
-	 * @param mousePosX
-	 * @param mousePosY
+	 * @param mousePosX the x position of the mouse at the time of the click
+	 * @param mousePosY the y position of the mouse at the time of the click
 	 * To be overridden only
 	 */
 	public void onClick(int mousePosX, int mousePosY)
@@ -121,8 +126,8 @@ public class GuiElement extends Wrapper implements EventCallback
 	
 	/**
 	 * Triggered when the mouse hovers within the button
-	 * @param mousePosX
-	 * @param mousePosY
+	 * @param mousePosX the x position of the mouse at the time of the hover
+	 * @param mousePosY the y position of the mouse at the time of the hover
 	 * To be overridden only
 	 */
 	public void onHover(int x, int y)

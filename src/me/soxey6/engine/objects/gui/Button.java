@@ -34,11 +34,6 @@ public class Button extends GuiElement{
 	{
 	}
 
-	/**
-	 * Checks if the current mouse down is new
-	 * @return
-	 */
-
 	@Override
 	public void logic()
 	{

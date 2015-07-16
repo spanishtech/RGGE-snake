@@ -1,6 +1,7 @@
 package me.soxey6.utils;
 
 import me.soxey6.engine.main.Game;
+import me.soxey6.engine.managers.file.FileManager;
 
 /**
  * This class will allow logging of any type of information into both 
@@ -62,7 +63,7 @@ public class Logger
 				break;
 		}
 		stringToPrint+=object.toString();
-		FileHandler.getFileHandler().appendFile(Game.getGame().getGameName()+".log", stringToPrint+"\n");
+		FileManager.getFileManager().appendFile(Game.getGame().getGameName()+".log", stringToPrint+"\n");
 	}
 	
 	/**
